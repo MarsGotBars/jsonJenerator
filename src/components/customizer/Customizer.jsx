@@ -4,7 +4,11 @@ export default function Customizer() {
   const { dataSelect, opt } = useOptionContext();
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState("");
+  const [currentSku, setCurrentSku] = useState({
+    productSKU: "",
+    variations: [],
+  })
   const [currentTxt, setCurrentTxt] = useState({
     name: "",
     slug: "",
@@ -24,40 +28,40 @@ export default function Customizer() {
     }));
   };
 
-  const handleData = (name, sku, afwerkingen, diktes) => {
+  const handleData = (inputValues) => {
+    // destructure to save myself time
+    const {name, sku, afwerkingen, diktes} = inputValues
+
     // format the name
-    // * correct
     const slugName = name.split(" ").join("-").toLowerCase();
-    // ? correct
     setCurrentTxt({
       name: name,
       slug: slugName,
     });
-    
+
     // format the sku for the product + all variations
-    let productSKU
+    let productSKU;
     const splitSKU = sku.split(" ");
     if (splitSKU.length > 1) {
-        console.log(splitSKU.length);
-        productSKU = splitSKU[0].toUpperCase() + "a";
-        
+      console.log(splitSKU.length);
+      productSKU = splitSKU[0].toUpperCase() + "a";
     } else {
-        console.log("single!");
-        return
+      console.log("single!");
+      return;
     }
-    console.log(productSKU)
-    // console.log("product", productSku, "variations", sku);
-  };
+    setCurrentSku({
+        productSKU: productSKU,
+        variations: splitSKU
+    })
 
+  };
+console.log(currentSku)
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("name", inputValues.name);
     console.log("sku", inputValues.sku);
     handleData(
-      inputValues.name,
-      inputValues.sku,
-      inputValues.afwerkingen,
-      inputValues.diktes
+      inputValues
     );
   };
 
