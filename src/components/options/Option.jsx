@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
 import data from "../../data/data";
+import { useOptionContext } from "../../context/Optioncontext";
 
-export default function Option({ option, onClick }) {
-  const [content, setContent] = useState();
+export default function Option({ option }) {
+  const { opt, dataSelect } = useOptionContext();
+  const [selectedOption, setSelectedOption] = opt;
+  const [selectedData, setSelectedData] = dataSelect
 
-  useEffect(() => {
-    if(data){
-        setContent(data);
-    } else return
-  }, [data]);
+  const handleClick = () => {
+    setSelectedOption(option);
+    setSelectedData(data[option])
+  };
+
   return (
-    <div onClick={(onClick)}>
+    <div
+      className={`${
+        selectedOption === option ? "border-red text-red bg-slate-100" : ""
+      } duration-300 cursor-pointer h-full w-full grid place-content-center border-2`}
+      onClick={handleClick}
+    >
       <h3 className="text-l font-bold">{option}</h3>
     </div>
   );

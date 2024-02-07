@@ -4,28 +4,54 @@
 
 @layer base {
   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    @apply m-0 p-0 box-border;
   }
 
   html,
   body,
   #root,
   .content {
-    height: 100%;
+    @apply h-full;
   }
 
   body {
+    @apply m-0 antialiased bg-gray-950;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
   }
 
-  main > div{
-    @apply bg-black text-white flex flex-col p-2 flex-grow;
+  main > div {
+    @apply bg-slate-800 text-white flex flex-col p-4 flex-grow rounded-xl;
+  }
+
+  form > div > div {
+    @apply col-span-1;
+  }
+
+  div > input {
+    @apply w-full border rounded-md p-2 text-black;
+  }
+}
+
+@layer utilities {
+  ::-webkit-scrollbar {
+    @apply w-3;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-red rounded-xl;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-darkRed;
   }
 }

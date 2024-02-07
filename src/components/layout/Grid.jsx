@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Jenerator from "../jenerator/Jenerator";
-import Selector from "../selector/Selector";
-export default function Grid() {
+import OptionList from "../options/OptionList";
+import { OptionProvider } from "../../context/Optioncontext";
+import Customizer from "../customizer/Customizer";
+import data from "../../data/data";
+export default function Grid({ classes }) {
+  const [variation, setVariation] = useState();
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    addToArray();
+  }, []);
+  const addToArray = () => {
+    let ObjArray = [];
+    for (const key in data) {
+      ObjArray.push(key);
+    }
+    setOptions(ObjArray);
+  };
+
   return (
-    <main className="grid grid-rows-2 grid-cols-2 gap-4 p-4 pt-0 flex-grow">
-      <div>
-        <label htmlFor="name">product name</label>
-        <input
-          name="name"
-          type="text"
-          className="bg-red-500 max-w-[12.5vw] border-2"
-        />
-      </div>
-      <div className="row-span-2">
-        <Jenerator />
-      </div>
-      <div className="grid grid-cols-3 grid-rows-3 place-items-center">
-        <Selector />
-      </div>
-    </main>
+    <OptionProvider>
+      <main className={`${classes}`}>
+        <div className="col-span-2 justify-evenly">
+          <Customizer/>
+        </div>
+        <div className="row-span-2 col-span-3 overflow-y-scroll">
+          <Jenerator />
+        </div>
+        <div className="grid col-span-2 grid-cols-3 grid-rows-3 gap-2">
+          <OptionList options={options} />
+        </div>
+      </main>
+    </OptionProvider>
   );
 }
