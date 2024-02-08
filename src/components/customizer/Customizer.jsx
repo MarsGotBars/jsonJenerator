@@ -8,16 +8,18 @@ export default function Customizer() {
   const [currentSku, setCurrentSku] = useState({
     productSKU: "",
     variations: [],
-  })
+  });
   const [currentTxt, setCurrentTxt] = useState({
-    name: "",
+    naam: "",
     slug: "",
   });
   const [inputValues, setInputValues] = useState({
-    name: "",
-    sku: "",
+    naam: "",
+    SKUs: "",
     afwerkingen: "",
     diktes: "",
+    prijzen: "",
+    gewichten: "",
   });
 
   const handleChange = (e) => {
@@ -30,39 +32,39 @@ export default function Customizer() {
 
   const handleData = (inputValues) => {
     // destructure to save myself time
-    const {name, sku, afwerkingen, diktes} = inputValues
+    const { naam, SKUs, afwerkingen, diktes, prijzen, gewichten } = inputValues;
 
     // format the name
-    const slugName = name.split(" ").join("-").toLowerCase();
+    const slugName =
+      naam.length > 0 ? naam.split(" ").join("-").toLowerCase() : naam;
     setCurrentTxt({
-      name: name,
+      naam: naam,
       slug: slugName,
     });
 
     // format the sku for the product + all variations
     let productSKU;
-    const splitSKU = sku.split(" ");
-    if (splitSKU.length > 1) {
-      console.log(splitSKU.length);
+    let splitSKU = SKUs.split(" ");
+    if (splitSKU instanceof Array && splitSKU.length > 1) {
       productSKU = splitSKU[0].toUpperCase() + "a";
     } else {
-      console.log("single!");
+      console.warn("single!");
       return;
     }
     setCurrentSku({
-        productSKU: productSKU,
-        variations: splitSKU
-    })
-
+      productSKU: productSKU,
+      variations: splitSKU,
+    });
+    if (afwerkingen) {
+      
+    }
   };
-console.log(currentSku)
+  console.log(currentSku);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("name", inputValues.name);
-    console.log("sku", inputValues.sku);
-    handleData(
-      inputValues
-    );
+    console.log("name", inputValues.naam);
+    console.log("sku", inputValues.SKUs);
+    handleData(inputValues);
   };
 
   const format = () => {
@@ -125,26 +127,29 @@ console.log(currentSku)
         Submit your necessary data here
       </h2>
       <form className="flex flex-col items-center gap-6">
-        <div className="grid grid-cols-1 gap-6 w-full">
+        <div className="grid grid-cols-2 gap-2 w-full">
           <div>
+            <label htmlFor="naam">Naam</label>
             <input
               onChange={handleChange}
               type="text"
-              name="name"
-              value={inputValues.name}
-              placeholder="name"
+              name="naam"
+              value={inputValues.naam}
+              placeholder="naam"
             />
           </div>
           <div>
+            <label htmlFor="SKUs">SKU's</label>
             <input
               onChange={handleChange}
               type="text"
-              name="sku"
-              value={inputValues.sku}
-              placeholder="sku"
+              name="SKUs"
+              value={inputValues.SKUs}
+              placeholder="SKUs"
             />
           </div>
           <div>
+            <label htmlFor="afwerkingen">afwerkingen</label>
             <input
               onChange={handleChange}
               type="text"
@@ -154,12 +159,33 @@ console.log(currentSku)
             />
           </div>
           <div>
+            <label htmlFor="diktes">diktes</label>
             <input
               onChange={handleChange}
               type="text"
               name="diktes"
               value={inputValues.diktes}
               placeholder="diktes"
+            />
+          </div>
+          <div>
+            <label htmlFor="prijzen">prijzen</label>
+            <input
+              onChange={handleChange}
+              type="text"
+              name="prijzen"
+              value={inputValues.prijzen}
+              placeholder="prijzen"
+            />
+          </div>
+          <div>
+            <label htmlFor="gewichten">gewichten</label>
+            <input
+              onChange={handleChange}
+              type="text"
+              name="gewichten"
+              value={inputValues.gewichten}
+              placeholder="gewichten"
             />
           </div>
         </div>

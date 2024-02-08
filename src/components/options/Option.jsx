@@ -16,7 +16,7 @@ export default function Option({ option }) {
     <div
       className={`${
         selectedOption === option ? "border-red text-red bg-slate-100" : ""
-      } duration-300 cursor-pointer h-full w-full grid place-content-center border-2`}
+      } rounded-xl duration-300 cursor-pointer h-full w-full grid place-content-center border-2`}
       onClick={handleClick}
     >
       <h3 className="text-l font-bold">{option}</h3>
