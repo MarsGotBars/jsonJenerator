@@ -229,10 +229,6 @@ const data = {
     slug: "dekton-replace-me-keramiek-keukenblad",
     permalink:
       "https://stonecenter-shop.nl/keukenbladen/keramiek-keukenbladen/dekton-keukenbladen/dekton-replace-me-keramiek-keukenblad/",
-    date_created: "2024-01-29T10:42:37",
-    date_created_gmt: "2024-01-29T09:42:37",
-    date_modified: "2024-02-01T16:54:25",
-    date_modified_gmt: "2024-02-01T15:54:25",
     type: "variable",
     status: "publish",
     featured: false,
@@ -272,18 +268,6 @@ const data = {
         id: 37,
         name: "offerte-product",
         slug: "offerte-product",
-      },
-    ],
-    images: [
-      {
-        id: 53550,
-        date_created: "2024-01-30T11:37:18",
-        date_created_gmt: "2024-01-30T09:37:18",
-        date_modified: "2024-01-30T11:37:31",
-        date_modified_gmt: "2024-01-30T09:37:31",
-        src: "https://stonecenter-shop.nl/wp-content/uploads/2024/01/replace-me.webp",
-        name: "replace-me",
-        alt: "Dekton Replace-me Keramiek Keukenblad",
       },
     ],
     attributes: [

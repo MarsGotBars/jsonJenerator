@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useOptionContext } from "../../context/Optioncontext";
+import Form from "../form/Form";
+import Title from "../layout/Title";
 export default function Customizer() {
   const { dataSelect, opt } = useOptionContext();
   const [selectedOption] = opt;
@@ -9,7 +11,7 @@ export default function Customizer() {
     productSKU: "",
     variations: [],
   });
-  const [currentTxt, setCurrentTxt] = useState({
+  const [currentName, setCurrentName] = useState({
     naam: "",
     slug: "",
   });
@@ -33,11 +35,9 @@ export default function Customizer() {
   const handleData = (inputValues) => {
     // destructure to save myself time
     const { naam, SKUs, afwerkingen, diktes, prijzen, gewichten } = inputValues;
-
     // format the name
-    const slugName =
-      naam.length > 0 ? naam.split(" ").join("-").toLowerCase() : naam;
-    setCurrentTxt({
+    const slugName = naam.length > 0 ? naam.split(" ").join("-").toLowerCase() : naam;
+    setCurrentName({
       naam: naam,
       slug: slugName,
     });
@@ -55,15 +55,19 @@ export default function Customizer() {
       console.warn("single!");
       return;
     }
-
+    console.log(currentName);
     if (afwerkingen) {
     }
   };
-  console.log(currentSku);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("name", inputValues.naam);
-    console.log("sku", inputValues.SKUs);
+    // form validation
+    // for (const key in inputValues) {
+    //   if (inputValues[key] === '') {
+    //     alert(`Please fill in ${key}`);
+    //     return;
+    //   }
+    // }
     handleData(inputValues);
   };
 
@@ -123,79 +127,13 @@ export default function Customizer() {
   }, [selectedOption]);
   return (
     <>
-      <h2 className="font-bold text-lg text-center">
-        Submit your necessary data here
-      </h2>
-      <form className="flex flex-col items-center gap-6">
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <div>
-            <label htmlFor="naam">Naam</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              name="naam"
-              value={inputValues.naam}
-              placeholder="naam"
-            />
-          </div>
-          <div>
-            <label htmlFor="SKUs">SKU's</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              name="SKUs"
-              value={inputValues.SKUs}
-              placeholder="SKUs"
-            />
-          </div>
-          <div>
-            <label htmlFor="afwerkingen">afwerkingen</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              name="afwerkingen"
-              value={inputValues.afwerkingen}
-              placeholder="afwerkingen"
-            />
-          </div>
-          <div>
-            <label htmlFor="diktes">diktes</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              name="diktes"
-              value={inputValues.diktes}
-              placeholder="diktes"
-            />
-          </div>
-          <div>
-            <label htmlFor="prijzen">prijzen</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              name="prijzen"
-              value={inputValues.prijzen}
-              placeholder="prijzen"
-            />
-          </div>
-          <div>
-            <label htmlFor="gewichten">gewichten</label>
-            <input
-              onChange={handleChange}
-              type="text"
-              name="gewichten"
-              value={inputValues.gewichten}
-              placeholder="gewichten"
-            />
-          </div>
-        </div>
-        <button
-          onClick={handleSubmit}
-          className=" bg-slate-700 rounded-md w-1/2 h-10 hover:bg-slate-100 hover:text-black duration-200"
-        >
-          Submit
-        </button>
-      </form>
+      <Title classes={"font-bold text-lg text-center"}>Submit your data here</Title>
+      <Form
+        formData={inputValues}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        classes={"flex flex-col items-center gap-6"}
+      />
     </>
   );
 }
