@@ -47,16 +47,16 @@ export default function Customizer() {
     let splitSKU = SKUs.split(" ");
     if (splitSKU instanceof Array && splitSKU.length > 1) {
       productSKU = splitSKU[0].toUpperCase() + "a";
+      setCurrentSku({
+        productSKU: productSKU,
+        variations: splitSKU,
+      });
     } else {
       console.warn("single!");
       return;
     }
-    setCurrentSku({
-      productSKU: productSKU,
-      variations: splitSKU,
-    });
+
     if (afwerkingen) {
-      
     }
   };
   console.log(currentSku);
