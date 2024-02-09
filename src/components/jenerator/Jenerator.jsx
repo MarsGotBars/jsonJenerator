@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useOptionContext } from "../../context/Optioncontext";
-import Title from "../layout/Title";
-import data from "../../data/data";
+import { useOptionContext } from "context/Optioncontext";
+import Title from "components/layout/Title";
 export default function Jenerator() {
-  const { opt, dataSelect } = useOptionContext();
-  const [selectedOption] = opt
-  const [selectedData] = dataSelect
+  const { opt, dataSelect, myData } = useOptionContext();
+  const [selectedOption] = opt;
+  const [selectedData] = dataSelect;
+  const [customData] = myData;
+  const fulldata = JSON.stringify(selectedData, null, 1)
+
+  const UsableData = () => {
+    return (
+      <>
+        <pre className="text-xs whitespace-pre-wrap overflow-y-scroll">
+          {selectedData && !customData ? fulldata : customData}
+        </pre>
+      </>
+    );
+  };
   return (
     <>
       {selectedData ? (
@@ -13,13 +24,7 @@ export default function Jenerator() {
       ) : (
         <Title>Select a template!</Title>
       )}
-      {selectedData && (
-        <>
-          <pre className="text-xs whitespace-pre-wrap">
-            {JSON.stringify(selectedData, null, 1)}
-          </pre>
-        </>
-      )}
+      {!customData ? <UsableData /> : <>custom component here</>}
     </>
   );
 }

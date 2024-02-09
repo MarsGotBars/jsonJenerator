@@ -1,7 +1,6 @@
 import React from "react";
 import Input from "./Input";
 export default function ({ formData, handleChange, handleSubmit, classes }) {
-  console.log("formData:", formData.naam);
   return (
     <form className={classes}>
       <div className="grid grid-cols-2 gap-2 w-full">

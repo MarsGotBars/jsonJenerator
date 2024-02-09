@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useOptionContext } from "../../context/Optioncontext";
-import Form from "../form/Form";
-import Title from "../layout/Title";
+import { useOptionContext } from "context/Optioncontext";
+import Form from "components/form/Form";
+import Title from "components/layout/Title";
 export default function Customizer() {
-  const { dataSelect, opt } = useOptionContext();
+  const { dataSelect, opt, myData } = useOptionContext();
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
+  const [customData, setCustomData] = myData;
   const [description, setDescription] = useState("");
+  // handle all sku's
   const [currentSku, setCurrentSku] = useState({
     productSKU: "",
     variations: [],
   });
+  // handle productname
   const [currentName, setCurrentName] = useState({
     naam: "",
     slug: "",
+  });
+  // handle finishes (afwerkingen)
+  const [currentVarData, setCurrentVarData] = useState({
+    finishes: [],
+    prices: [],
+    thickness: [],
+    gewichten: [],
+    varsku: []
   });
   const [inputValues, setInputValues] = useState({
     naam: "",
@@ -34,30 +45,53 @@ export default function Customizer() {
 
   const handleData = (inputValues) => {
     // destructure to save myself time
-    const { naam, SKUs, afwerkingen, diktes, prijzen, gewichten } = inputValues;
+    const {naam} = inputValues
+    const naamObj = naam
+    let first = Object.keys(inputValues);
+    if(first.length === 6)
+      delete inputValues[naam]
+    console.log(inputValues)
+    // ! might remove this as I know what I need
+    for(const i in inputValues){
+      // console.log(i)
+      const slugName = i.length > 0 ? i.split(" ").join("-").toLowerCase() : i;
+      console.log("sluggy", inputValues.naam);
+    }
+    // const { naam, SKUs, afwerkingen, diktes, prijzen, gewichten } = inputValues;
     // format the name
-    const slugName = naam.length > 0 ? naam.split(" ").join("-").toLowerCase() : naam;
-    setCurrentName({
-      naam: naam,
-      slug: slugName,
-    });
+    // const slugName = naam.length > 0 ? naam.split(" ").join("-").toLowerCase() : naam;
+    // setCurrentName({
+    //   naam: naam,
+    //   slug: slugName,
+    // });
 
     // format the sku for the product + all variations
-    let productSKU;
-    let splitSKU = SKUs.split(" ");
-    if (splitSKU instanceof Array && splitSKU.length > 1) {
-      productSKU = splitSKU[0].toUpperCase() + "a";
-      setCurrentSku({
-        productSKU: productSKU,
-        variations: splitSKU,
-      });
-    } else {
-      console.warn("single!");
-      return;
+    // let productSKU;
+    // let splitSKU = SKUs.split(" ");
+    // if (splitSKU instanceof Array && splitSKU.length > 1) {
+    //   productSKU = splitSKU[0].toUpperCase() + "a";
+    //   setCurrentSku({
+    //     productSKU: productSKU,
+    //     variations: splitSKU,
+    //   });
+    // } else {
+    //   console.warn("single!");
+    //   return;
+    // }
+    
+    // currentVarData({
+    //   finishes: afwerking,
+    //   prices: [],
+    //   thickness: [],
+    //   gewichten: [],
+    //   varsku: []
+    // })
+
+    // do something with the selectedData, and set the formatteddata into the context
+    const dataConfiguration = () => {
+      
     }
-    console.log(currentName);
-    if (afwerkingen) {
-    }
+    dataConfiguration()
   };
   const handleSubmit = (e) => {
     e.preventDefault();
