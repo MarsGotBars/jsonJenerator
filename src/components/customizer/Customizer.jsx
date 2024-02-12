@@ -24,7 +24,7 @@ export default function Customizer() {
     prices: [],
     thickness: [],
     gewichten: [],
-    varsku: []
+    varsku: [],
   });
   const [inputValues, setInputValues] = useState({
     naam: "",
@@ -44,18 +44,24 @@ export default function Customizer() {
   };
 
   const handleData = (inputValues) => {
+    let firstIteration = true;
     // destructure to save myself time
-    const {naam} = inputValues
-    const naamObj = naam
-    let first = Object.keys(inputValues);
-    if(first.length === 6)
-      delete inputValues[naam]
-    console.log(inputValues)
-    // ! might remove this as I know what I need
-    for(const i in inputValues){
-      // console.log(i)
-      const slugName = i.length > 0 ? i.split(" ").join("-").toLowerCase() : i;
-      console.log("sluggy", inputValues.naam);
+    for (const i in inputValues) {
+      // correct
+      if (firstIteration) {
+        const slugName =
+          inputValues[i].length > 0
+            ? inputValues[i].split(" ").join("-").toLowerCase()
+            : inputValues[i].toLocaleLowerCase();
+        setCurrentName({
+          naam: inputValues[i],
+          slug: slugName,
+        });
+        firstIteration = false;
+        continue;
+      }
+
+      // console.log("sluggy", inputValues.naam);
     }
     // const { naam, SKUs, afwerkingen, diktes, prijzen, gewichten } = inputValues;
     // format the name
@@ -78,7 +84,7 @@ export default function Customizer() {
     //   console.warn("single!");
     //   return;
     // }
-    
+
     // currentVarData({
     //   finishes: afwerking,
     //   prices: [],
@@ -88,10 +94,8 @@ export default function Customizer() {
     // })
 
     // do something with the selectedData, and set the formatteddata into the context
-    const dataConfiguration = () => {
-      
-    }
-    dataConfiguration()
+    const dataConfiguration = () => {};
+    dataConfiguration();
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -159,15 +163,88 @@ export default function Customizer() {
   useEffect(() => {
     format();
   }, [selectedOption]);
+
+  const findOccurrences = (str, replacement, toReplace) => {
+    const regex = new RegExp(toReplace, "gi");
+    return str.replace(regex, (match) =>
+      match === match.toUpperCase() ? replacement.toUpperCase() : replacement.toLowerCase()
+    );
+  };
+
+  const findStrInObj = (obj, name, toReplace) => {
+    const updatedObj = { ...obj };
+
+    for (const key in updatedObj) {
+      if (typeof updatedObj[key] === "string") {
+        updatedObj[key] = findOccurrences(updatedObj[key], name, toReplace);
+      } else if (typeof updatedObj[key] === "object" && updatedObj[key] !== null) {
+        updatedObj[key] = findStrInObj(updatedObj[key], name, toReplace); // Recursively traverse nested objects
+      }
+    }
+
+    return updatedObj;
+  };
+
+  const handleFind = () => {
+    if (!selectedData) {
+      console.log("No selected data!");
+      return;
+    }
+
+    console.log("Original selected data:", selectedData);
+
+    const updatedData = findStrInObj(selectedData, inputValues.naam, "Replace-me");
+    console.log("Updated selected data:", updatedData);
+
+    setCustomData(updatedData);
+  };
+
+  // const test = (selected) => {
+  //   if (!selected) {
+  //     return;
+  //   }
+  //   Object.keys(selectedData).map((item) => {
+  //     if (typeof selectedData[item] === 'string' || item === "meta_data" && selectedData[item].includes("replace-me")) {
+  //       let placeholder = selectedData[item];
+  //       placeholder = placeholder.replace("replace-me", "test");
+  //       selectedData[item] = placeholder;
+  //       console.log("selected", selectedData[item], "item", item)
+  //     }
+  //   });
+  // };
+
+  // const handleFind = () => {
+  //   selectedData && findStrInObj(selectedData)
+  // }
+
+  // const findStrInObj(data){
+
+  // }
+
+
+
+
+
+
+
+
   return (
     <>
-      <Title classes={"font-bold text-lg text-center"}>Submit your data here</Title>
+      <Title classes={"font-bold text-lg text-center"}>
+        Submit your data here
+      </Title>
       <Form
         formData={inputValues}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         classes={"flex flex-col items-center gap-6"}
       />
+      <button
+        className="bg-red rounded-md w-1/2 place-self-center p-2 hover:bg-rose-500 duration-200"
+        onClick={handleFind}
+      >
+        current data
+      </button>
     </>
   );
 }

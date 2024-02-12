@@ -7,12 +7,12 @@ export default function Jenerator() {
   const [selectedData] = dataSelect;
   const [customData] = myData;
   const fulldata = JSON.stringify(selectedData, null, 1)
-
+  const replacement = JSON.stringify(customData, null, 1)
   const UsableData = () => {
     return (
       <>
         <pre className="text-xs whitespace-pre-wrap overflow-y-scroll">
-          {selectedData && !customData ? fulldata : customData}
+          {selectedData && !customData ? fulldata : replacement}
         </pre>
       </>
     );
@@ -24,7 +24,7 @@ export default function Jenerator() {
       ) : (
         <Title>Select a template!</Title>
       )}
-      {!customData ? <UsableData /> : <>custom component here</>}
+      {selectedData ? <UsableData/> : <></>}
     </>
   );
 }
