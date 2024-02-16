@@ -7,6 +7,7 @@ export default function Customizer() {
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [customData, setCustomData] = myData;
+  const [intermediaryData, setIntermediaryData] = useState();
   const [description, setDescription] = useState("");
   // handle all sku's
   const [currentSku, setCurrentSku] = useState({
@@ -19,13 +20,13 @@ export default function Customizer() {
     slug: "",
   });
   // handle finishes (afwerkingen)
-  const [currentVarData, setCurrentVarData] = useState({
-    finishes: [],
-    prices: [],
-    thickness: [],
-    gewichten: [],
-    varsku: [],
-  });
+  const [currentVarData, setCurrentVarData] = useState({});
+
+  // ! single item with no variations
+  const [variationlessItem, setVariationlessItem] = useState();
+  // ! single item with variations
+  const [ItemWvariations, setItemWvariations] = useState();
+
   const [inputValues, setInputValues] = useState({
     naam: "",
     SKUs: "",
@@ -43,69 +44,43 @@ export default function Customizer() {
     }));
   };
 
-  const handleData = (inputValues) => {
-    const { naam, SKUs, ...variationData } = inputValues;
-    let firstIteration = true;
+  const handleGeneration = (inputValues, customData) => {
+    const { naam, SKUs, diktes, ...variationData } = inputValues;
+    const custom = {...customData}
+    console.log(SKUs);
+    // SKU data
     let productSKU;
-    let splitSKU = SKUs.split(" ");
-    // destructure to save myself time
-    for (const i in variationData) {
-      // correct
-      if (firstIteration) {
-        if (splitSKU instanceof Array && splitSKU.length > 1) {
-          productSKU = splitSKU[i].toUpperCase() + "a";
-        } else {
-          console.warn("single!");
-          return;
-        }
-
-        firstIteration = false;
-        continue;
-      }
+    let splitSKU = SKUs.toUpperCase().split(" ");
+    if (!(splitSKU instanceof Array && splitSKU.length > 1)) {
+      return
+    }
+    productSKU = splitSKU[0] + "a";
       setCurrentSku({
         productSKU: productSKU,
         variations: splitSKU,
-      });
-
-      // console.log("sluggy", inputValues.naam);
-    }
-
-    setCurrentName({
-      naam: naam,
     });
-
-    // format the name
-    // const slugName =
-    //   inputValues[i].length > 0
-    //     ? inputValues[i].split(" ").join("-").toLowerCase()
-    //     : inputValues[i].toLocaleLowerCase();
-    // setCurrentName({
-    //   naam: inputValues[i],
-    //   slug: slugName,
-    // });
-
-    // format the sku for the product + all variations
-    // let productSKU;
-    // let splitSKU = SKUs.split(" ");
-    // if (splitSKU instanceof Array && splitSKU.length > 1) {
-    //   productSKU = splitSKU[0].toUpperCase() + "a";
-    //   setCurrentSku({
-    //     productSKU: productSKU,
-    //     variations: splitSKU,
-    //   });
-    // } else {
-    //   console.warn("single!");
-    //   return;
-    // }
-
-    // currentVarData({
-    //   finishes: afwerking,
-    //   prices: [],
-    //   thickness: [],
-    //   gewichten: [],
-    //   varsku: []
-    // })
-
+    custom.sku = currentSku.productSKU
+    // ! SKU data
+    // format thickness
+    
+    // ! format thickness
+    // data iteration | Iterate over each key available in variationData
+    let updatedVarData = {}
+    for (const key in variationData) {
+      let data = variationData[key].trim().split(" ");
+      if (!(data instanceof Array && data.length > 1)) {
+        console.log("broken!");
+        updatedVarData = {}
+        break;
+      }
+      updatedVarData[key] = data
+    }
+    console.log(updatedVarData);
+    updatedVarData.diktes = ["1,2 cm", "2 cm"]
+    setCurrentVarData(updatedVarData)
+    // ! data variation
+    console.log("updated customdata", customData);
+    setCustomData(customData)
     // do something with the selectedData, and set the formatteddata into the context
     const dataConfiguration = () => {};
     dataConfiguration();
@@ -119,11 +94,12 @@ export default function Customizer() {
     //     return;
     //   }
     // }
-    handleData(inputValues);
+    // selectedOption ? handleFind(inputValues) : alert("please select an option and fill in all the data");
+    handleFind(inputValues)
   };
-
+  console.log("variations", currentVarData);
   const changeCurrentDescription = useCallback(() => {
-    let updatedDescription = ""
+    let updatedDescription = "";
     switch (selectedOption) {
       case "dekton":
         updatedDescription = `<h1><strong>Dekton x keramiek keukenbladen</strong></h1>
@@ -175,7 +151,7 @@ export default function Customizer() {
       default:
         break;
     }
-    setDescription(updatedDescription)
+    setDescription(updatedDescription);
   }, [selectedOption]);
 
   useEffect(() => {
@@ -210,11 +186,10 @@ export default function Customizer() {
         updatedObj[key] = findStrInObj(updatedObj[key], name, toReplace); // Recursively traverse nested objects
       }
     }
-    console.log("test obj", updatedObj);
     return updatedObj;
   };
 
-  const handleFind = () => {
+  const handleFind = (inputValues) => {
     if (!selectedData) {
       console.log("No selected data!");
       return;
@@ -229,31 +204,12 @@ export default function Customizer() {
     );
     console.log("Updated selected data:", updatedData);
 
-    setCustomData(updatedData);
+
+    handleGeneration(inputValues, updatedData);
   };
+  useEffect(()=>{
 
-  // const test = (selected) => {
-  //   if (!selected) {
-  //     return;
-  //   }
-  //   Object.keys(selectedData).map((item) => {
-  //     if (typeof selectedData[item] === 'string' || item === "meta_data" && selectedData[item].includes("replace-me")) {
-  //       let placeholder = selectedData[item];
-  //       placeholder = placeholder.replace("replace-me", "test");
-  //       selectedData[item] = placeholder;
-  //       console.log("selected", selectedData[item], "item", item)
-  //     }
-  //   });
-  // };
-
-  // const handleFind = () => {
-  //   selectedData && findStrInObj(selectedData)
-  // }
-
-  // const findStrInObj(data){
-
-  // }
-
+  }, [customData])
   return (
     <>
       <Title classes={"font-bold text-lg text-center"}>
@@ -265,12 +221,9 @@ export default function Customizer() {
         handleSubmit={handleSubmit}
         classes={"flex flex-col items-center gap-6"}
       />
-      <button
-        className="bg-red rounded-md w-1/2 place-self-center p-2 hover:bg-rose-500 duration-200"
-        onClick={handleFind}
-      >
-        current data
-      </button>
+      <div>
+
+      </div>
     </>
   );
 }

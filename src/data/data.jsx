@@ -1,7 +1,6 @@
 const data = {
   neolith: {
     name: "Neolith Replace-me Keramiek Keukenblad",
-    slug: "neolith-replace-me-keramiek-keukenblad",
     type: "variable",
     status: "publish",
     featured: false,
@@ -9,7 +8,7 @@ const data = {
     short_description:
       "<h6>De Prijzen zijn een richt prijs voor 1m² diep en per strekkende meter EX BTW.</h6>\n",
     sku: "skuHERE",
-    price: "125.35",
+    price: "",
     on_sale: false,
     purchasable: true,
     virtual: false,
@@ -188,7 +187,7 @@ const data = {
     short_description:
       "<h6>De Prijzen zijn een richt prijs voor 1m² diep en per strekkende meter EX BTW.</h6>\n",
     sku: "skuHERE",
-    price: "284.7",
+    price: "",
     on_sale: false,
     purchasable: true,
     virtual: false,

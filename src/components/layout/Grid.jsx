@@ -25,7 +25,7 @@ export default function Grid({ classes }) {
         <div className="col-span-2 justify-evenly">
           <Customizer/>
         </div>
-        <div className="row-span-2 col-span-3">
+        <div className="row-span-2 col-span-3 pr-4">
           <Jenerator />
         </div>
         <div className="grid col-span-2 grid-cols-3 grid-rows-3 gap-2">
