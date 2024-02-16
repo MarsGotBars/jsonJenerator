@@ -11,7 +11,7 @@ const OptionContext = createContext();
 export const OptionProvider = ({ children }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedData, setSelectedData] = useState(null);
-  const [customData, setCustomData] = useState("");
+  const [customData, setCustomData] = useState(null);
   const [formattedDescription, setFormattedDescription] = useState("");
 
   useEffect(() => {

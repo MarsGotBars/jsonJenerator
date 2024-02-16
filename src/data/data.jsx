@@ -2,8 +2,6 @@ const data = {
   neolith: {
     name: "Neolith Replace-me Keramiek Keukenblad",
     slug: "neolith-replace-me-keramiek-keukenblad",
-    permalink:
-      "https://stonecenter-shop.nl/keukenbladen/keramiek-keukenbladen/neolith-keukenbladen/neolith-replace-me-keramiek-keukenblad/",
     type: "variable",
     status: "publish",
     featured: false,
@@ -125,11 +123,6 @@ const data = {
         value: "",
       },
       {
-        id: 530787,
-        key: "_yoast_wpseo_primary_product_cat",
-        value: "",
-      },
-      {
         id: 530788,
         key: "_actived_d_gallery",
         value: "1",
@@ -150,43 +143,6 @@ const data = {
         value: "1",
       },
       {
-        id: 530792,
-        key: "_yoast_wpseo_focuskw_text_input",
-        value: "Replace-me keukenblad",
-      },
-      {
-        id: 530793,
-        key: "_yoast_wpseo_focuskw",
-        value: "Replace-me keukenblad",
-      },
-      {
-        id: 530794,
-        key: "_yoast_wpseo_title",
-        value: "Replace-me keukenblad kopen bij Stonecenter",
-      },
-      {
-        id: 530795,
-        key: "_yoast_wpseo_metadesc",
-        value:
-          "Replace-me Keramiek Keukenblad : Van Arabische schoonheid ✅Goedkoop ✅ met korte levertijd ✅ Op maat leverbaar ✅ Hoge kwaliteit",
-      },
-      {
-        id: 530796,
-        key: "_yoast_wpseo_focuskeywords",
-        value:
-          '[{"keyword":"keramiek keukenblad","score":"good"},{"keyword":"Replace-me","score":"good"},{"keyword":"keukenblad","score":"good"},{"keyword":"Neolith","score":"good"}]',
-      },
-      {
-        id: 530797,
-        key: "_yoast_wpseo_estimated-reading-time-minutes",
-        value: "5",
-      },
-      {
-        id: 530798,
-        key: "_yoast_wpseo_keywordsynonyms",
-        value: '["","","","",""]',
-      },
-      {
         id: 530799,
         key: "rank_math_title",
         value: "Neolith Replace-me Keramiek Keukenblad kopen bij Stonecenter",
@@ -195,7 +151,7 @@ const data = {
         id: 530800,
         key: "rank_math_description",
         value:
-          "Neolith Replace-me Keramiek Keukenblad : Van Arabische schoonheid ✅Goedkoop ✅ met korte levertijd ✅ Op maat leverbaar ✅ Hoge kwaliteit",
+          "Neolith Replace-me Keramiek Keukenblad : Van Arabische schoonheid ✅ Goedkoop ✅ met korte levertijd ✅ Op maat leverbaar ✅ Hoge kwaliteit",
       },
       {
         id: 530801,
@@ -222,13 +178,9 @@ const data = {
     has_options: true,
     permalink_template:
       "https://stonecenter-shop.nl/keukenbladen/keramiek-keukenbladen/neolith-keukenbladen/%pagename%/",
-    generated_slug: "neolith-replace-me-keramiek-keukenblad",
   },
   dekton: {
     name: "Dekton Replace-me Keramiek Keukenblad",
-    slug: "dekton-replace-me-keramiek-keukenblad",
-    permalink:
-      "https://stonecenter-shop.nl/keukenbladen/keramiek-keukenbladen/dekton-keukenbladen/dekton-replace-me-keramiek-keukenblad/",
     type: "variable",
     status: "publish",
     featured: false,
@@ -340,21 +292,6 @@ const data = {
         value: "1352",
       },
       {
-        id: 494762,
-        key: "_yst_prominent_words_version",
-        value: "1",
-      },
-      {
-        id: 494763,
-        key: "cwp_meta_box_check",
-        value: "No",
-      },
-      {
-        id: 494764,
-        key: "_yoast_wpseo_primary_product_cat",
-        value: "224",
-      },
-      {
         id: 494765,
         key: "_actived_d_gallery",
         value: "1",
@@ -373,27 +310,6 @@ const data = {
         id: 494768,
         key: "_wc_dgallery_auto_feature_image",
         value: "1",
-      },
-      {
-        id: 494769,
-        key: "_yoast_wpseo_focuskw_text_input",
-        value: "Dekton Replace-me keramiek keukenblad",
-      },
-      {
-        id: 494770,
-        key: "_yoast_wpseo_focuskw",
-        value: "Dekton Replace-me keramiek keukenblad",
-      },
-      {
-        id: 494771,
-        key: "_yoast_wpseo_title",
-        value:
-          "Dekton Replace-me keramiek keukenblad - opmaat leverbaar bij StoneCenter",
-      },
-      {
-        id: 494772,
-        key: "_yoast_wpseo_metadesc",
-        value: "Dekton Replace-me Keramiek keukenblad bij StoneCenter.",
       },
       {
         id: 494853,

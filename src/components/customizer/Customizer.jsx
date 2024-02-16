@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useOptionContext } from "context/Optioncontext";
 import Form from "components/form/Form";
 import Title from "components/layout/Title";
@@ -44,30 +44,43 @@ export default function Customizer() {
   };
 
   const handleData = (inputValues) => {
+    const { naam, SKUs, ...variationData } = inputValues;
     let firstIteration = true;
+    let productSKU;
+    let splitSKU = SKUs.split(" ");
     // destructure to save myself time
-    for (const i in inputValues) {
+    for (const i in variationData) {
       // correct
       if (firstIteration) {
-        const slugName =
-          inputValues[i].length > 0
-            ? inputValues[i].split(" ").join("-").toLowerCase()
-            : inputValues[i].toLocaleLowerCase();
-        setCurrentName({
-          naam: inputValues[i],
-          slug: slugName,
-        });
+        if (splitSKU instanceof Array && splitSKU.length > 1) {
+          productSKU = splitSKU[i].toUpperCase() + "a";
+        } else {
+          console.warn("single!");
+          return;
+        }
+
         firstIteration = false;
         continue;
       }
+      setCurrentSku({
+        productSKU: productSKU,
+        variations: splitSKU,
+      });
 
       // console.log("sluggy", inputValues.naam);
     }
-    // const { naam, SKUs, afwerkingen, diktes, prijzen, gewichten } = inputValues;
+
+    setCurrentName({
+      naam: naam,
+    });
+
     // format the name
-    // const slugName = naam.length > 0 ? naam.split(" ").join("-").toLowerCase() : naam;
+    // const slugName =
+    //   inputValues[i].length > 0
+    //     ? inputValues[i].split(" ").join("-").toLowerCase()
+    //     : inputValues[i].toLocaleLowerCase();
     // setCurrentName({
-    //   naam: naam,
+    //   naam: inputValues[i],
     //   slug: slugName,
     // });
 
@@ -109,10 +122,11 @@ export default function Customizer() {
     handleData(inputValues);
   };
 
-  const format = () => {
+  const changeCurrentDescription = useCallback(() => {
+    let updatedDescription = ""
     switch (selectedOption) {
       case "dekton":
-        setDescription(`<h1><strong>Dekton x keramiek keukenbladen</strong></h1>
+        updatedDescription = `<h1><strong>Dekton x keramiek keukenbladen</strong></h1>
                 <a href="https://stonecenter-shop.nl/">StoneCenter</a><strong> fabriceert</strong> naast natuursteen- en composiet- ook <strong>keramische keukenbladen</strong> waaronder het Dekton Vigil keramiek keukenblad. Dekton is een begrip op het gebied van keramiek keukenbladen en heeft zich gespecialiseerd tot een van de beste keramisch leveranciers die er zijn. Met name kwaliteit en hun brede assortiment is het grote voordeel van Dekton.
                 
                 Naast de toepassing voor Dekton Vigil keramiek keukenbladen, kan het materiaal ook voor velen andere toepassingen gebruikt worden, denk aan: gevels, wanden, vloeren wanden en alle andere bedenkbare toepassingen.
@@ -153,22 +167,34 @@ export default function Customizer() {
                 
                 Wij nodigen u daarom van harte uit een afspraak te maken vul uw eigen datum en wens is en we zullen u dan bevestigen of het mogelijk of met een alternatief komen.
                 
-                Gebruik in dat geval de knop of “<a href="https://stonecenter-shop.nl/afspraak-maken-met-stonecenter-delft-of-breda/">maak uw afspraak hie</a>r” zodat u niet hoeft te wachten wanneer een klant net voor u is binnenwandelt. Wij nemen dan uitgebreid tijd voor u en u heeft dan ook meteen uw offerte op maat.`);
+                Gebruik in dat geval de knop of “<a href="https://stonecenter-shop.nl/afspraak-maken-met-stonecenter-delft-of-breda/">maak uw afspraak hie</a>r” zodat u niet hoeft te wachten wanneer een klant net voor u is binnenwandelt. Wij nemen dan uitgebreid tijd voor u en u heeft dan ook meteen uw offerte op maat.`;
         break;
-
+      case "neolith":
+        updatedDescription = "neolith here";
+        break;
       default:
         break;
     }
-  };
-  useEffect(() => {
-    format();
+    setDescription(updatedDescription)
   }, [selectedOption]);
+
+  useEffect(() => {
+    changeCurrentDescription();
+  }, [selectedOption, changeCurrentDescription]);
 
   const findOccurrences = (str, replacement, toReplace) => {
     const regex = new RegExp(toReplace, "gi");
-    return str.replace(regex, (match) =>
-      match === match.toUpperCase() ? replacement.toUpperCase() : replacement.toLowerCase()
-    );
+    return str.replace(regex, (match) => {
+      // Preserve the case of the matched string
+      if (match === match.toUpperCase()) {
+        return replacement.toUpperCase();
+      } else if (match === match.toLowerCase()) {
+        return replacement.toLowerCase();
+      } else {
+        // Preserve the case of the first character
+        return replacement.charAt(0) + replacement.slice(1);
+      }
+    });
   };
 
   const findStrInObj = (obj, name, toReplace) => {
@@ -177,11 +203,14 @@ export default function Customizer() {
     for (const key in updatedObj) {
       if (typeof updatedObj[key] === "string") {
         updatedObj[key] = findOccurrences(updatedObj[key], name, toReplace);
-      } else if (typeof updatedObj[key] === "object" && updatedObj[key] !== null) {
+      } else if (
+        typeof updatedObj[key] === "object" &&
+        updatedObj[key] !== null
+      ) {
         updatedObj[key] = findStrInObj(updatedObj[key], name, toReplace); // Recursively traverse nested objects
       }
     }
-
+    console.log("test obj", updatedObj);
     return updatedObj;
   };
 
@@ -193,7 +222,11 @@ export default function Customizer() {
 
     console.log("Original selected data:", selectedData);
 
-    const updatedData = findStrInObj(selectedData, inputValues.naam, "Replace-me");
+    const updatedData = findStrInObj(
+      selectedData,
+      inputValues.naam,
+      "Replace-me"
+    );
     console.log("Updated selected data:", updatedData);
 
     setCustomData(updatedData);
@@ -220,13 +253,6 @@ export default function Customizer() {
   // const findStrInObj(data){
 
   // }
-
-
-
-
-
-
-
 
   return (
     <>
