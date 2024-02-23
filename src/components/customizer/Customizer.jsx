@@ -18,7 +18,7 @@ export default function Customizer() {
     naam: "",
     SKUs: "",
     afwerking: "",
-    'keukenblad dikte': "",
+    "keukenblad dikte": "",
     prijzen: "",
     gewichten: "",
   });
@@ -35,47 +35,52 @@ export default function Customizer() {
     },
     [setInputValues]
   );
-  
+
   const handleGeneration = (inputValues, inputData) => {
-    const { naam, SKUs, diktes, ...variationData } = inputValues;
+    const {
+      naam,
+      SKUs,
+      ["keukenblad dikte"]: keukenbladDikte,
+      ...variationData
+    } = inputValues;
     // SKU data
     let splitSKU = SKUs.toUpperCase().split(" ");
     let productSKU = splitSKU[0] + "a";
     inputData.sku = productSKU;
     // ! SKU data
     // format thickness
-
+    // ! experimental
+    const arrayOfStrings = keukenbladDikte.split(" ");
+    const filteredArray = arrayOfStrings.filter((str) => str.trim() !== "");
+    const dikteObj = {};
+    for (let i = 0; i < filteredArray.length; i += 2) {
+      dikteObj[i / 2] = `${filteredArray[i]} ${filteredArray[i + 1]}`;
+    }
     // ! format thickness
     // data iteration | Iterate over each key available in variationData
-    let updatedVarData = {};
-    let i = 0
+    const attributes = inputData.attributes;
+    attributes[0].options = dikteObj;
     // figure out whether to double loop it and run the function recursively or try to extract the path
+    // attributes and variation generation
     for (const key in variationData) {
       const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
-      
-      for(const attr in inputData.attributes){
-        if(uppercaseKey === inputData.attributes[attr].name){
-          foundPath = attr
-          console.log("CORRECT", uppercaseKey, foundPath, inputData.attributes[attr].name);
-        }
-        // console.log(inputData.attributes[attr]);
-      }
-      if (Object.prototype.hasOwnProperty.call(inputData.attributes[foundPath].name, uppercaseKey)) {
-        console.log(`${uppercaseKey} exists in the inputData object!`, inputData.attributes[foundPath]);
-      } else {
-        console.log(`${uppercaseKey} does not exist in the inputData object!`, inputData.attributes[foundPath]);
-      }
-      i++
+      // scope current incoming VarData
+      let updatedVarData = {};
+      // split data
       let data = variationData[key].trim().split(" ");
-      if (!(data instanceof Array && data.length > 1)) {
-        console.log("broken!");
-        updatedVarData = {};
-        break;
+      // could possibly put variations into here
+      for (let j = 0; j < data.length; j++) {
+        // create number keys for each instance of data
+        updatedVarData[j] = data[j];
       }
-      updatedVarData[key] = data;
+      // set attribute specifications
+      if (Object.keys(updatedVarData[0]).length != 0) {
+        for (const attr in attributes) {
+          const number = attributes[attr];
+          if (number.name === uppercaseKey) number.options = updatedVarData;
+        }
+      }
     }
-    // console.log('attrib', inputData.attributes);
-    // console.log(updatedVarData);
     // ! data iteration
     return inputData;
   };
@@ -194,7 +199,6 @@ export default function Customizer() {
 
   useEffect(() => {
     if (selectedOption) {
-      console.log("selected", selectedOption);
       handleFind(inputValues);
     }
   }, [inputValues, selectedOption]);
