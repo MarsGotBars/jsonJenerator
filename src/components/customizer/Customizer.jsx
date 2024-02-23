@@ -49,7 +49,7 @@ export default function Customizer() {
     // data iteration | Iterate over each key available in variationData
     let updatedVarData = {};
     let i = 0
-    let foundPath = 0;
+    // figure out whether to double loop it and run the function recursively or try to extract the path
     for (const key in variationData) {
       const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
       
@@ -60,7 +60,7 @@ export default function Customizer() {
         }
         // console.log(inputData.attributes[attr]);
       }
-      if (Object.prototype.hasOwnProperty.call(inputData.attributes[foundPath], uppercaseKey)) {
+      if (Object.prototype.hasOwnProperty.call(inputData.attributes[foundPath].name, uppercaseKey)) {
         console.log(`${uppercaseKey} exists in the inputData object!`, inputData.attributes[foundPath]);
       } else {
         console.log(`${uppercaseKey} does not exist in the inputData object!`, inputData.attributes[foundPath]);
