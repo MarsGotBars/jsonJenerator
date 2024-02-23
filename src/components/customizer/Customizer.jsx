@@ -7,20 +7,7 @@ export default function Customizer() {
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [customData, setCustomData] = myData;
-  const [intermediaryData, setIntermediaryData] = useState();
   const [description, setDescription] = useState("");
-  // handle all sku's
-  const [currentSku, setCurrentSku] = useState({
-    productSKU: "",
-    variations: [],
-  });
-  // handle productname
-  const [currentName, setCurrentName] = useState({
-    naam: "",
-    slug: "",
-  });
-  // handle finishes (afwerkingen)
-  const [currentVarData, setCurrentVarData] = useState({});
 
   // ! single item with no variations
   const [variationlessItem, setVariationlessItem] = useState();
@@ -30,74 +17,69 @@ export default function Customizer() {
   const [inputValues, setInputValues] = useState({
     naam: "",
     SKUs: "",
-    afwerkingen: "",
-    diktes: "",
+    afwerking: "",
+    'keukenblad dikte': "",
     prijzen: "",
     gewichten: "",
   });
+  // when customData gets updated
+  useEffect(() => {}, [customData]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleGeneration = (inputValues, customData) => {
+  const handleChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      setInputValues((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    },
+    [setInputValues]
+  );
+  
+  const handleGeneration = (inputValues, inputData) => {
     const { naam, SKUs, diktes, ...variationData } = inputValues;
-    const custom = {...customData}
-    console.log(SKUs);
     // SKU data
-    let productSKU;
     let splitSKU = SKUs.toUpperCase().split(" ");
-    if (!(splitSKU instanceof Array && splitSKU.length > 1)) {
-      return
-    }
-    productSKU = splitSKU[0] + "a";
-      setCurrentSku({
-        productSKU: productSKU,
-        variations: splitSKU,
-    });
-    custom.sku = currentSku.productSKU
+    let productSKU = splitSKU[0] + "a";
+    inputData.sku = productSKU;
     // ! SKU data
     // format thickness
-    
+
     // ! format thickness
     // data iteration | Iterate over each key available in variationData
-    let updatedVarData = {}
+    let updatedVarData = {};
+    let i = 0
+    let foundPath = 0;
     for (const key in variationData) {
+      const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
+      
+      for(const attr in inputData.attributes){
+        if(uppercaseKey === inputData.attributes[attr].name){
+          foundPath = attr
+          console.log("CORRECT", uppercaseKey, foundPath, inputData.attributes[attr].name);
+        }
+        // console.log(inputData.attributes[attr]);
+      }
+      if (Object.prototype.hasOwnProperty.call(inputData.attributes[foundPath], uppercaseKey)) {
+        console.log(`${uppercaseKey} exists in the inputData object!`, inputData.attributes[foundPath]);
+      } else {
+        console.log(`${uppercaseKey} does not exist in the inputData object!`, inputData.attributes[foundPath]);
+      }
+      i++
       let data = variationData[key].trim().split(" ");
       if (!(data instanceof Array && data.length > 1)) {
         console.log("broken!");
-        updatedVarData = {}
+        updatedVarData = {};
         break;
       }
-      updatedVarData[key] = data
+      updatedVarData[key] = data;
     }
-    console.log(updatedVarData);
-    updatedVarData.diktes = ["1,2 cm", "2 cm"]
-    setCurrentVarData(updatedVarData)
-    // ! data variation
-    console.log("updated customdata", customData);
-    setCustomData(customData)
-    // do something with the selectedData, and set the formatteddata into the context
-    const dataConfiguration = () => {};
-    dataConfiguration();
+    // console.log('attrib', inputData.attributes);
+    // console.log(updatedVarData);
+    // ! data iteration
+    return inputData;
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // form validation
-    // for (const key in inputValues) {
-    //   if (inputValues[key] === '') {
-    //     alert(`Please fill in ${key}`);
-    //     return;
-    //   }
-    // }
-    // selectedOption ? handleFind(inputValues) : alert("please select an option and fill in all the data");
-    handleFind(inputValues)
-  };
-  console.log("variations", currentVarData);
+
   const changeCurrentDescription = useCallback(() => {
     let updatedDescription = "";
     switch (selectedOption) {
@@ -160,16 +142,11 @@ export default function Customizer() {
 
   const findOccurrences = (str, replacement, toReplace) => {
     const regex = new RegExp(toReplace, "gi");
-    return str.replace(regex, (match) => {
-      // Preserve the case of the matched string
-      if (match === match.toUpperCase()) {
-        return replacement.toUpperCase();
-      } else if (match === match.toLowerCase()) {
-        return replacement.toLowerCase();
-      } else {
-        // Preserve the case of the first character
-        return replacement.charAt(0) + replacement.slice(1);
-      }
+    return str.replace(regex, () => {
+      // Capitalize the first letter of the replacement string
+      const capitalizedReplacement =
+        replacement.charAt(0).toUpperCase() + replacement.slice(1);
+      return capitalizedReplacement;
     });
   };
 
@@ -178,7 +155,11 @@ export default function Customizer() {
 
     for (const key in updatedObj) {
       if (typeof updatedObj[key] === "string") {
-        updatedObj[key] = findOccurrences(updatedObj[key], name, toReplace);
+        updatedObj[key] = findOccurrences(
+          updatedObj[key],
+          name.trim(),
+          toReplace
+        );
       } else if (
         typeof updatedObj[key] === "object" &&
         updatedObj[key] !== null
@@ -189,27 +170,34 @@ export default function Customizer() {
     return updatedObj;
   };
 
-  const handleFind = (inputValues) => {
-    if (!selectedData) {
-      console.log("No selected data!");
-      return;
+  const handleFind = useCallback(
+    (inputValues) => {
+      if (!selectedData) {
+        console.log("No selected data!");
+        return;
+      }
+
+      const updatedData = findStrInObj(
+        selectedData,
+        inputValues.naam,
+        "Replace-me"
+      );
+
+      // Generate custom data
+      const customData = handleGeneration(inputValues, updatedData);
+
+      // Update the customData state only once at the end
+      setCustomData(customData);
+    },
+    [selectedData, handleGeneration]
+  );
+
+  useEffect(() => {
+    if (selectedOption) {
+      console.log("selected", selectedOption);
+      handleFind(inputValues);
     }
-
-    console.log("Original selected data:", selectedData);
-
-    const updatedData = findStrInObj(
-      selectedData,
-      inputValues.naam,
-      "Replace-me"
-    );
-    console.log("Updated selected data:", updatedData);
-
-
-    handleGeneration(inputValues, updatedData);
-  };
-  useEffect(()=>{
-
-  }, [customData])
+  }, [inputValues, selectedOption]);
   return (
     <>
       <Title classes={"font-bold text-lg text-center"}>
@@ -218,12 +206,9 @@ export default function Customizer() {
       <Form
         formData={inputValues}
         handleChange={handleChange}
-        handleSubmit={handleSubmit}
         classes={"flex flex-col items-center gap-6"}
       />
-      <div>
-
-      </div>
+      <div></div>
     </>
   );
 }

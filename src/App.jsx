@@ -1,5 +1,5 @@
 import logo from "./logo.svg";
-import Grid from "components/layout/Grid";
+import Grid from "./components/layout/Grid";
 function App() {
   return (
     <div className="content flex flex-col max-h-screen">

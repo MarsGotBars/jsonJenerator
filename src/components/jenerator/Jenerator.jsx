@@ -9,9 +9,9 @@ export default function Jenerator() {
   const [copied, setCopied] = useState(0);
   const fulldata = JSON.stringify(selectedData, null, 1);
   const replacement = JSON.stringify(customData, null, 1);
-  const hasData = selectedData || (customData && Object.keys(customData).length > 0);
+  const hasData = selectedData ? selectedData : (customData && Object.keys(customData).length > 0);
   const clipboardCopy = () => {
-    const txtToCopy = customData && replacement || fulldata
+    const txtToCopy = customData ? replacement : fulldata
     navigator.clipboard.writeText(txtToCopy)
       .then(()=>{
         setCopied(1)

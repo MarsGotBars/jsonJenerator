@@ -1,5 +1,5 @@
 const data = {
-  neolith: {
+  Neolith: {
     name: "Neolith Replace-me Keramiek Keukenblad",
     type: "variable",
     status: "publish",
@@ -178,7 +178,7 @@ const data = {
     permalink_template:
       "https://stonecenter-shop.nl/keukenbladen/keramiek-keukenbladen/neolith-keukenbladen/%pagename%/",
   },
-  dekton: {
+  Dekton: {
     name: "Dekton Replace-me Keramiek Keukenblad",
     type: "variable",
     status: "publish",
@@ -379,6 +379,185 @@ const data = {
     ],
     stock_status: "instock",
     has_options: true,
+  },
+  Marazzi: {
+    name: "Neolith Replace-me Keramiek Keukenblad",
+    type: "variable",
+    status: "publish",
+    featured: false,
+    catalog_visibility: "visible",
+    short_description:
+      "<h6>De Prijzen zijn een richt prijs voor 1m² diep en per strekkende meter EX BTW.</h6>\n",
+    sku: "skuHERE",
+    price: "",
+    on_sale: false,
+    purchasable: true,
+    virtual: false,
+    downloadable: false,
+    tax_status: "taxable",
+    manage_stock: false,
+    backorders: "no",
+    backorders_allowed: false,
+    backordered: false,
+    sold_individually: false,
+    shipping_required: true,
+    shipping_taxable: true,
+    reviews_allowed: false,
+    upsell_ids: [662, 663, 536, 664],
+    parent_id: 0,
+    categories: [
+      {
+        id: 167,
+        name: "Neolith keukenbladen",
+        slug: "neolith-keukenbladen",
+      },
+    ],
+    tags: [
+      {
+        id: 37,
+        name: "offerte-product",
+        slug: "offerte-product",
+      },
+    ],
+    attributes: [
+      {
+        id: 18,
+        name: "Keukenblad dikte",
+        slug: "pa_keukenblad-dikte",
+        position: 0,
+        visible: true,
+        variation: true,
+        options: [
+          "0,6 cm massief",
+          "2,8 tot 8,8 cm opgedikt in verstek",
+          "1,2 cm massief",
+          "2 cm massief",
+          "3,2 tot 8,2 cm opgedikt in verstek",
+        ],
+      },
+      {
+        id: 4,
+        name: "Materiaal",
+        slug: "pa_materiaal",
+        position: 2,
+        visible: true,
+        variation: false,
+        options: ["Keramiek", "Porselein"],
+      },
+      {
+        id: 5,
+        name: "Merk",
+        slug: "pa_merk",
+        position: 3,
+        visible: true,
+        variation: false,
+        options: ["Neolith"],
+      },
+      {
+        id: 1,
+        name: "Afwerking",
+        slug: "pa_afwerking",
+        position: 4,
+        visible: true,
+        variation: false,
+        options: ["silk"],
+      },
+      {
+        id: 28,
+        name: "Neolith Collectie",
+        slug: "pa_neolith-collectie",
+        position: 5,
+        visible: true,
+        variation: false,
+        options: ["Classtone"],
+      },
+    ],
+    menu_order: 940,
+    price_html:
+      '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol"></span>&nbsp;125,35</bdi></span> &ndash; <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol"></span>&nbsp;275,43</bdi></span>',
+    related_ids: [305, 207, 353, 413, 430],
+    meta_data: [
+      {
+        id: 420158,
+        key: "rank_math_internal_links_processed",
+        value: "1",
+      },
+      {
+        id: 530784,
+        key: "rank_math_contentai_score",
+        value: {
+          wordCount: "45.45",
+          linkCount: "45",
+          headingCount: "100",
+          mediaCount: "4.44",
+        },
+      },
+      {
+        id: 530785,
+        key: "_postnl_country_origin",
+        value: "0",
+      },
+      {
+        id: 530786,
+        key: "_postnl_hs_tariff_code",
+        value: "",
+      },
+      {
+        id: 530788,
+        key: "_actived_d_gallery",
+        value: "1",
+      },
+      {
+        id: 530789,
+        key: "_wc_dgallery_image_source",
+        value: "wc_gallery",
+      },
+      {
+        id: 530790,
+        key: "_wc_dgallery_enable_gallery_thumb",
+        value: "1",
+      },
+      {
+        id: 530791,
+        key: "_wc_dgallery_auto_feature_image",
+        value: "1",
+      },
+      {
+        id: 530799,
+        key: "rank_math_title",
+        value: "Neolith Replace-me Keramiek Keukenblad kopen bij Stonecenter",
+      },
+      {
+        id: 530800,
+        key: "rank_math_description",
+        value:
+          "Neolith Replace-me Keramiek Keukenblad : Van Arabische schoonheid ✅ Goedkoop ✅ met korte levertijd ✅ Op maat leverbaar ✅ Hoge kwaliteit",
+      },
+      {
+        id: 530801,
+        key: "rank_math_focus_keyword",
+        value: "Neolith Replace-me Keramiek Keukenblad",
+      },
+      {
+        id: 530802,
+        key: "rank_math_news_sitemap_robots",
+        value: "index",
+      },
+      {
+        id: 530803,
+        key: "rank_math_robots",
+        value: ["index"],
+      },
+      {
+        id: 530804,
+        key: "rank_math_analytic_object_id",
+        value: "1327",
+      },
+    ],
+    stock_status: "instock",
+    has_options: true,
+    permalink_template:
+      "https://stonecenter-shop.nl/keukenbladen/keramiek-keukenbladen/neolith-keukenbladen/%pagename%/",
   },
 };
 

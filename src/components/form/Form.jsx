@@ -1,9 +1,9 @@
 import React from "react";
 import Input from "./Input";
-export default function ({ formData, handleChange, handleSubmit, classes }) {
+export default function ({ formData, handleChange, classes }) {
   return (
     <form className={classes}>
-      <div className="grid grid-cols-2 gap-2 w-full">
+      <div className="grid grid-cols-2 gap-4 gap-y-6 w-full">
         {Object.keys(formData).map((item) => {
           return (
             <Input
@@ -15,12 +15,6 @@ export default function ({ formData, handleChange, handleSubmit, classes }) {
           );
         })}
       </div>
-      <button
-        onClick={handleSubmit}
-        className=" bg-slate-700 rounded-md w-1/2 h-10 hover:bg-slate-100 hover:text-black duration-200"
-      >
-        Submit
-      </button>
     </form>
   );
 }
