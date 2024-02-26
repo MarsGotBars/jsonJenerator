@@ -37,6 +37,8 @@ export default function Customizer() {
   );
 
   const handleGeneration = (inputValues, inputData) => {
+    const variants = []
+    inputData.variations = variants
     const {
       naam,
       SKUs,
@@ -50,18 +52,44 @@ export default function Customizer() {
     // ! SKU data
     // format thickness
     // ! experimental
-    const arrayOfStrings = keukenbladDikte.split(" ");
-    const filteredArray = arrayOfStrings.filter((str) => str.trim() !== "");
+
+    const splitRegex = /(\d+(?:,\d+)?(?:-\d+(?:,\d+)?)?)\s*(\w+)/g;
     const dikteObj = {};
-    for (let i = 0; i < filteredArray.length; i += 2) {
-      dikteObj[i / 2] = `${filteredArray[i]} ${filteredArray[i + 1]}`;
+    let match;
+    let index = 0;
+
+    while ((match = splitRegex.exec(keukenbladDikte)) !== null) {
+      dikteObj[index] = `${match[1]} ${match[2]}`;
+      if (
+        dikteObj[index] === "3,2-8,2 cm" ||
+        dikteObj[index] === "2,9-7,9 cm"
+      ) {
+        dikteObj[index] += " opgedikt in verstek";
+      }
+      index++;
     }
     // ! format thickness
-    // data iteration | Iterate over each key available in variationData
     const attributes = inputData.attributes;
     attributes[0].options = dikteObj;
-    // figure out whether to double loop it and run the function recursively or try to extract the path
     // attributes and variation generation
+    const prijzen = variationData.prijzen.split(" ")
+    const gewichten = variationData.gewichten.split(" ")
+    const afwerkingen = variationData.afwerking.split(" ")
+    Object.keys(dikteObj).forEach((key) => {
+      const dikte = dikteObj[key];
+      afwerkingen.forEach((afwerking, afwerkingIndex) => {
+        let variation = {
+          attributes: {
+            afwerking: afwerking,
+            dikte: dikte
+          },
+          price: prijzen[afwerkingIndex * Object.keys(dikteObj).length + parseInt(key)],
+          weight: gewichten[afwerkingIndex * Object.keys(dikteObj).length + parseInt(key)]
+        };
+        variants.push(variation);
+      });
+    });
+    // data iteration | Iterate over each key available in variationData
     for (const key in variationData) {
       const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
       // scope current incoming VarData
@@ -73,18 +101,20 @@ export default function Customizer() {
         // create number keys for each instance of data
         updatedVarData[j] = data[j];
       }
+      
       // set attribute specifications
       if (Object.keys(updatedVarData[0]).length != 0) {
         for (const attr in attributes) {
           const number = attributes[attr];
           if (number.name === uppercaseKey) number.options = updatedVarData;
+          
         }
       }
     }
     // ! data iteration
     return inputData;
   };
-
+  // customData.desc = "hoi";
   const changeCurrentDescription = useCallback(() => {
     let updatedDescription = "";
     switch (selectedOption) {

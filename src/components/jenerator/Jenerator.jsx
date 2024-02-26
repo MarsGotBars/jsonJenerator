@@ -14,6 +14,7 @@ export default function Jenerator() {
     const txtToCopy = customData ? replacement : fulldata
     navigator.clipboard.writeText(txtToCopy)
       .then(()=>{
+        
         setCopied(1)
       })
       .catch((error)=>{
@@ -23,6 +24,7 @@ export default function Jenerator() {
       setCopied(0)
     }, 1000);
   }
+  console.log(copied);
   useEffect(()=>{
     styleJSON()
   }, [fulldata, customData])
@@ -32,7 +34,7 @@ export default function Jenerator() {
   const UsableData = () => {
     return (
       <>
-        <pre className={`text-xs whitespace-pre-wrap bg-white bg-opacity-0 rounded-xl p-1 mr-2 duration-500 ease-in-out cursor-pointer hover:bg-white hover:bg-opacity-10 transition-colors ${copied === 1 ? "hover:bg-green-300" : copied === 2 ? "hover:bg-red" : ''}`} onClick={clipboardCopy}>
+        <pre className={`text-xs whitespace-pre-wrap bg-white bg-opacity-0 rounded-xl p-1 mr-2 duration-500 ease-in-out cursor-pointer hover:bg-opacity-10 transition-colors ${copied === 1 ? "hover:bg-green-300" : copied === 2 ? "hover:bg-red" : ''}`} onClick={clipboardCopy}>
           {customData && replacement || fulldata}
         </pre>
       </>
