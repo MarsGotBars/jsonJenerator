@@ -78,7 +78,7 @@ const data = {
         slug: "pa_afwerking",
         position: 4,
         visible: true,
-        variation: false,
+        variation: true,
         options: ["silk"],
       },
       {
