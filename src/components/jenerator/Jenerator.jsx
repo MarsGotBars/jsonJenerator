@@ -23,7 +23,7 @@ export default function Jenerator() {
       setCopied(0)
     }, 1000);
   }
-  useEffect(()=>{
+    useEffect(()=>{
     styleJSON()
   }, [fulldata, customData])
   const styleJSON = (original, custom) => {
@@ -46,7 +46,7 @@ export default function Jenerator() {
         <Title>Select a template!</Title>
       )}
       <div className="overflow-y-scroll mt-2">
-        {hasData ? <UsableData /> : <></>}
+        {hasData ? <UsableData /> : <p className="text-xs">Or enjoy this empty box :)</p>}
       </div>
     </>
   );
