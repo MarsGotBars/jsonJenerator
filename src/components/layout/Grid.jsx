@@ -4,13 +4,18 @@ import OptionList from "components/options/OptionList";
 import { OptionProvider } from "context/Optioncontext";
 import Customizer from "components/customizer/Customizer";
 import data from "data/data";
-export default function Grid({ classes }) {
+export default function Grid({ col, classes }) {
   const [variation, setVariation] = useState();
   const [options, setOptions] = useState([]);
+  const [cols, setCols] = useState({
+    Large: 0,
+    Rest: 12
+  })
   const bool = false;
   useEffect(() => {
     addToArray();
-  }, []);
+    CalculateGrid(col);
+  }, [col]);
   const addToArray = () => {
     let ObjArray = [];
     for (const key in data) {
@@ -19,16 +24,25 @@ export default function Grid({ classes }) {
     setOptions(ObjArray);
   };
 
+  const CalculateGrid = (span) => {
+    const col = 12
+    const largeCols = span
+    const restCols = col - span
+    setCols({
+      Large: largeCols,
+      Rest: restCols
+    })
+  };
   return (
     <OptionProvider>
       <main className={`${classes}`}>
-        <div className="col-span-2 justify-evenly">
+        <div className={`row-span-1 col-span-${cols.Rest} justify-evenly`}>
           <Customizer/>
         </div>
-        <div className="row-span-2 col-span-3 pr-4">
+        <div className={`row-span-2 col-span-${cols.Large} pr-4`}>
           <Jenerator />
         </div>
-        <div className="grid col-span-2 grid-cols-3 grid-rows-3 gap-2">
+        <div className={`grid col-span-${cols.Rest} row-span-1 grid-cols-3 grid-rows-3 gap-2`}>
           {!bool ? <OptionList options={options} /> : <>hi</>}
         </div>
       </main>

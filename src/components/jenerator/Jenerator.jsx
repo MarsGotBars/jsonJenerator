@@ -14,7 +14,6 @@ export default function Jenerator() {
     const txtToCopy = customData ? replacement : fulldata
     navigator.clipboard.writeText(txtToCopy)
       .then(()=>{
-        
         setCopied(1)
       })
       .catch((error)=>{
@@ -24,7 +23,6 @@ export default function Jenerator() {
       setCopied(0)
     }, 1000);
   }
-  console.log(copied);
   useEffect(()=>{
     styleJSON()
   }, [fulldata, customData])
