@@ -32,7 +32,6 @@ export default function Customizer() {
 
   const handleGeneration = (inputValues, inputData) => {
     const variants = [];
-    inputData.variations = variants;
     const {
       naam,
       SKUs,
@@ -75,12 +74,12 @@ export default function Customizer() {
           {
             id: 18,
             name: "Keukenblad dikte",
-            option: afwerking,
+            option: dikteObj[index],
           },
           {
-            id: 0,
+            id: 1,
             name: "Afwerking",
-            option: dikteObj[index],
+            option: afwerking,
           },
         ],
         sku: splitSKU[index],
@@ -89,6 +88,9 @@ export default function Customizer() {
       };
       variants.push(variation);
     });
+    console.log(variants[0]["attributes"]);
+    inputData.default_attributes = variants[0]["attributes"];
+    inputData.variations = variants
     // data iteration | Iterate over each key available in variationData
     for (const key in variationData) {
       const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
@@ -113,7 +115,6 @@ export default function Customizer() {
     // ! data iteration
     // lastly format the correct description!
     inputData.description = changeCurrentDescription();
-    console.log(variants);
     return inputData;
   };
 
