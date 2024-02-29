@@ -5,12 +5,12 @@ import { OptionProvider } from "context/Optioncontext";
 import Customizer from "components/customizer/Customizer";
 import data from "data/data";
 export default function Grid({ col, classes }) {
-  const [variation, setVariation] = useState();
   const [options, setOptions] = useState([]);
   const [cols, setCols] = useState({
     Large: 0,
     Rest: 12
-  })
+  });
+
   const bool = false;
   useEffect(() => {
     addToArray();
@@ -33,19 +33,20 @@ export default function Grid({ col, classes }) {
       Rest: restCols
     })
   };
+
   return (
     <OptionProvider>
       <main className={`${classes}`}>
         <div className={`row-span-1 col-span-${cols.Rest} justify-evenly`}>
           <Customizer/>
         </div>
-        <div className={`row-span-2 col-span-${cols.Large} pr-4`}>
+        <div className={`row-span-2 col-span-${cols.Large} pr-4 relative`}>
           <Jenerator />
         </div>
         <div className={`grid col-span-${cols.Rest} row-span-1 grid-cols-3 grid-rows-3 gap-2`}>
-          {!bool ? <OptionList options={options} /> : <>hi</>}
+          {!bool && <OptionList options={options} />}
         </div>
       </main>
     </OptionProvider>
   );
-}
+};

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSendProduct } from "hooks/usePost";
 import { useOptionContext } from "context/Optioncontext";
 import Form from "components/form/Form";
 import Title from "components/layout/Title";
@@ -88,7 +89,6 @@ export default function Customizer() {
       };
       variants.push(variation);
     });
-    console.log(variants[0]["attributes"]);
     inputData.default_attributes = variants[0]["attributes"];
     inputData.variations = variants
     // data iteration | Iterate over each key available in variationData
@@ -238,7 +238,6 @@ export default function Customizer() {
         inputValues.naam,
         "Replace-me"
       );
-      console.log();
       // Generate custom data
       const customData = handleGeneration(inputValues, updatedData);
 

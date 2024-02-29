@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const spanSafeList = []
+const spanSafeList = ["bg-green-400",]
 const num = 12
 for(let i = 0; i < 12; i++){
   spanSafeList.push(`col-span-${i}`)
