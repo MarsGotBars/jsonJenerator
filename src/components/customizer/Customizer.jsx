@@ -57,7 +57,7 @@ export default function Customizer() {
         dikteObj[index] === "2,9-7,9 cm"
       ) {
         dikteObj[index] += " opgedikt in verstek";
-      }
+      } else dikteObj[index] += " massief"
       index++;
     }
     // ! format thickness
@@ -118,7 +118,6 @@ export default function Customizer() {
     return inputData;
   };
 
-  // customData.desc = "hoi";
   const changeCurrentDescription = useCallback(() => {
     const name = (inputValues.naam).charAt(0).toUpperCase() + (inputValues.naam).slice(1);
     switch (selectedOption) {
