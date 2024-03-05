@@ -115,6 +115,7 @@ export default function Customizer() {
     // ! data iteration
     // lastly format the correct description!
     inputData.description = changeCurrentDescription();
+    inputData.slug = inputData.name && inputData.name.toLowerCase().split(" ").join("-")
     return inputData;
   };
 

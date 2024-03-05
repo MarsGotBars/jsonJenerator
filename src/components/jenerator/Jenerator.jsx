@@ -7,6 +7,7 @@ export default function Jenerator() {
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [customData] = myData;
+  const [overlayColor, setOverlayColor] = useState("");
   const fulldata = JSON.stringify(selectedData, null, 1);
   const replacement = JSON.stringify(customData, null, 1);
   const hasData = selectedData
@@ -15,7 +16,8 @@ export default function Jenerator() {
   const { mutate: sendData, status, reset } = useSendProduct();
   const handleClick = () => {
     const data = customData;
-    sendData({product: data, productName: data.name});
+    console.log(data);
+    sendData(data);
   };
   useEffect(() => {
     styleJSON();
@@ -62,15 +64,13 @@ export default function Jenerator() {
       </div>
     );
   };
-  const rmOverlay = (status) => {
+  const rmOverlay = () => {
     setTimeout(() => {
-      console.log("reset", status);
       reset();
     }, 1000);
   };
   useEffect(() => {
-    status === "success" || "error" && rmOverlay(status);
-    console.log(status);
+    status === "success" && rmOverlay();
   }, [status]);
   return (
     <>
