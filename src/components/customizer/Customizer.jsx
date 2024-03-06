@@ -89,6 +89,7 @@ export default function Customizer() {
       };
       variants.push(variation);
     });
+    console.log(variants);
     inputData.default_attributes = variants[0]["attributes"];
     inputData.variations = variants
     // data iteration | Iterate over each key available in variationData
