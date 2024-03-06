@@ -3,11 +3,13 @@ import { useOptionContext } from "context/Optioncontext";
 import { useEffect, useState } from "react";
 import { useSendProduct } from "hooks/usePost";
 export default function Jenerator() {
-  const { opt, dataSelect, myData } = useOptionContext();
+  const { opt, dataSelect, myData, vars, prods } = useOptionContext();
+  const [amountVariations] = vars;
+  const [productCompletion] = prods;
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [customData] = myData;
-  const [overlayColor, setOverlayColor] = useState("");
+  const [toggle, setToggle] = useState(true);
   const fulldata = JSON.stringify(selectedData, null, 1);
   const replacement = JSON.stringify(customData, null, 1);
   const hasData = selectedData
@@ -32,6 +34,13 @@ export default function Jenerator() {
         >
           {(customData && replacement) || fulldata}
         </pre>
+
+        <div className={`sticky bottom-0 flex flex-col items-center animate-fade-out ${productCompletion ? "animate-fade-in" : "opacity-0"}`}>
+          <div className="backdrop-blur-sm bg-green-400/50 w-fit text-center text-white p-2 rounded-2xl mb-2">
+            <p>Product sent!</p>
+            <span>{amountVariations} variations added!</span>
+          </div>
+        </div>
       </>
     );
   };

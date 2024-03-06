@@ -13,6 +13,8 @@ export const OptionProvider = ({ children }) => {
   const [selectedData, setSelectedData] = useState(null);
   const [customData, setCustomData] = useState(null);
   const [formattedDescription, setFormattedDescription] = useState("");
+  const [amountVariations, setAmountvariations] = useState(0)
+  const [productCompletion, setProductCompletion] = useState(false)
 
   useEffect(() => {
     addDescription();
@@ -36,6 +38,8 @@ export const OptionProvider = ({ children }) => {
         dataSelect: [selectedData, setSelectedData],
         myData: [customData, setCustomData],
         format: [formattedDescription, setFormattedDescription],
+        vars: [amountVariations, setAmountvariations],
+        prods: [productCompletion, setProductCompletion]
       }}
     >
       {children}

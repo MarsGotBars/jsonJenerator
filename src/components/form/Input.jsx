@@ -9,6 +9,7 @@ export default function Input({ inputName, handleChange, data }) {
         onChange={handleChange}
         type="text"
         name={inputName}
+        id={inputName}
         value={data.inputName}
         placeholder={inputName}
       />

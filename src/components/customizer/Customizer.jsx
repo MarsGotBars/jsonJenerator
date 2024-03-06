@@ -17,8 +17,7 @@ export default function Customizer() {
     prijzen: "",
     gewichten: "",
   });
-  // when customData gets updated
-  useEffect(() => {}, [customData]);
+
 
   const handleChange = useCallback(
     (e) => {
@@ -57,7 +56,7 @@ export default function Customizer() {
         dikteObj[index] === "2,9-7,9 cm"
       ) {
         dikteObj[index] += " opgedikt in verstek";
-      } else dikteObj[index] += " massief"
+      } else dikteObj[index] += " massief";
       index++;
     }
     // ! format thickness
@@ -89,9 +88,8 @@ export default function Customizer() {
       };
       variants.push(variation);
     });
-    console.log(variants);
     inputData.default_attributes = variants[0]["attributes"];
-    inputData.variations = variants
+    inputData.variations = variants;
     // data iteration | Iterate over each key available in variationData
     for (const key in variationData) {
       const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
@@ -116,12 +114,14 @@ export default function Customizer() {
     // ! data iteration
     // lastly format the correct description!
     inputData.description = changeCurrentDescription();
-    inputData.slug = inputData.name && inputData.name.toLowerCase().split(" ").join("-")
+    inputData.slug =
+      inputData.name && inputData.name.toLowerCase().split(" ").join("-");
     return inputData;
   };
 
   const changeCurrentDescription = useCallback(() => {
-    const name = (inputValues.naam).charAt(0).toUpperCase() + (inputValues.naam).slice(1);
+    const name =
+      inputValues.naam.charAt(0).toUpperCase() + inputValues.naam.slice(1);
     switch (selectedOption) {
       case "Dekton":
         return `<h1><strong>Dekton ${name} keramiek keukenbladen</strong></h1>
@@ -229,11 +229,6 @@ export default function Customizer() {
 
   const handleFind = useCallback(
     (inputValues) => {
-      if (!selectedData) {
-        console.log("No selected data!");
-        return;
-      }
-
       const updatedData = findStrInObj(
         selectedData,
         inputValues.naam,
