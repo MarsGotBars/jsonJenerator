@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import Grid from "./components/layout/Grid";
 import Btn from "./components/Btn/Btn";
 import React, { useState } from "react";

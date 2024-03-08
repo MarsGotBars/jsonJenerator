@@ -10,8 +10,8 @@ module.exports = {
   theme: {
     extend: {
       animation:{
-        'fade-in': 'fade-in 300ms ease-in infinite',
-        'fade-out': 'fade-out 300ms ease-out infinite',
+        'fade-in': 'fade-in 300ms ease-in forwards',
+        'fade-out': 'fade-out 300ms ease-out forwards',
       },
       keyframes: {
         'fade-in':{

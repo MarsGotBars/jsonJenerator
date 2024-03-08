@@ -35,7 +35,7 @@ export default function Jenerator() {
           {(customData && replacement) || fulldata}
         </pre>
 
-        <div className={`sticky bottom-0 flex flex-col items-center animate-fade-out ${productCompletion ? "animate-fade-in" : "opacity-0"}`}>
+        <div className={`sticky bottom-0 flex flex-col items-center ${productCompletion ? "animate-fade-in" : "animate-fade-out"}`}>
           <div className="backdrop-blur-sm bg-green-400/50 w-fit text-center text-white p-2 rounded-2xl mb-2">
             <p>Product sent!</p>
             <span>{amountVariations} variations added!</span>

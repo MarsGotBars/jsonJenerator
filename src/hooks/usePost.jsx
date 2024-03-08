@@ -4,9 +4,15 @@ import { useOptionContext } from "../context/Optioncontext";
 
 const postProductData = async (product) => {
   let x = 0;
+  let productUrl;
   try {
     console.log(product);
-    const productUrl = `${process.env.REACT_APP_API_URL}54905?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
+    const checkProductUrl = `${process.env.REACT_APP_API_URL}?slug=${product.slug}&consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
+    const checkProduct = await axios.get(checkProductUrl);
+    !checkProduct.data.length
+      ? console.log("creating new product...")
+      : console.log("updating existing product...");
+    productUrl = `${process.env.REACT_APP_API_URL}54905?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
     const productResponse = await axios.post(productUrl, product);
     const variations = product.variations;
     const id = productResponse.data.id;
@@ -28,8 +34,8 @@ const postProductData = async (product) => {
       return productVarResponse;
     });
     const variationResponses = await Promise.all(postVarPromises);
-    product.count = x
-    return product
+    product.count = x;
+    return product;
   } catch (error) {
     console.error("Error processing data", error);
   }
@@ -45,10 +51,11 @@ export const useSendProduct = () => {
       console.error("Error sending product data:", error);
     },
     onSuccess: async (data) => {
+      console.log(data);
       setAmountvariations(data.count);
       setProductCompletion(true);
       setTimeout(() => {
-        setProductCompletion(false)
+        setProductCompletion(false);
       }, 4000);
     },
   });

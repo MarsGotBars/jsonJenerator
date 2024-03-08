@@ -124,7 +124,7 @@ export default function Customizer() {
       inputValues.naam.charAt(0).toUpperCase() + inputValues.naam.slice(1);
     switch (selectedOption) {
       case "Dekton":
-        return `<h1><strong>Dekton ${name} keramiek keukenbladen</strong></h1>
+        return `<h1><strong>Dekton ${name} keramiek keukenblad</strong></h1>
         <a href="https://stonecenter-shop.nl/">StoneCenter</a><strong> fabriceert</strong> naast natuursteen- en composiet- ook <strong>keramische keukenbladen</strong> waaronder het Dekton ${name} keramiek keukenblad. Dekton is een begrip op het gebied van keramiek keukenbladen en heeft zich gespecialiseerd tot een van de beste keramisch leveranciers die er zijn. Met name kwaliteit en hun brede assortiment is het grote voordeel van Dekton.
         
         Naast de toepassing voor Dekton ${name} keramiek keukenbladen, kan het materiaal ook voor velen andere toepassingen gebruikt worden, denk aan: gevels, wanden, vloeren wanden en alle andere bedenkbare toepassingen.
