@@ -12,8 +12,10 @@ const postProductData = async (product) => {
     console.log("checkProductUrl", checkProductUrl);
     const checkProduct = await axios.get(checkProductUrl);
     console.log("checkProduct", checkProduct);
-    const checkProductVariations = checkProduct.data.length !== 0 && checkProduct.data[0].variations;
-    const checkProductId = checkProduct.data.length !== 0 && checkProduct.data[0].id;
+    const checkProductVariations =
+      checkProduct.data.length !== 0 && checkProduct.data[0].variations;
+    const checkProductId =
+      checkProduct.data.length !== 0 && checkProduct.data[0].id;
     if (checkProduct.data.length === 0) {
       console.log("creating new product...");
     } else {
@@ -31,9 +33,6 @@ const postProductData = async (product) => {
         console.log("variations deleted succesfully");
       } else return;
     }
-    console.log("here?");
-    console.log(product.variation);
-    console.log("wtf", product.variations);
     // properly working
     productUrl = `${process.env.REACT_APP_API_URL}${
       checkProductId ? checkProductId : ""
@@ -43,9 +42,13 @@ const postProductData = async (product) => {
     console.log(productUrl);
     const productResponse = await axios.post(productUrl, product);
     console.log("product posted!", productResponse);
-    const variationsUrl = `${process.env.REACT_APP_API_URL}${checkProductId ? checkProductId : productResponse.data.id}/variations/?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
+    const variationsUrl = `${process.env.REACT_APP_API_URL}${
+      checkProductId ? checkProductId : productResponse.data.id
+    }/variations/?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${
+      process.env.REACT_APP_CS
+    }`;
     console.log("product.variations", product.variations);
-    const variations = product.variations
+    const variations = product.variations;
     const postVarPromises = variations.map(async (obj) => {
       x++;
       const productVarResponse = await axios.post(variationsUrl, obj);
@@ -57,28 +60,22 @@ const postProductData = async (product) => {
     return product;
   } catch (error) {
     console.error("Error processing data", error.response?.data.code);
-    throw error
+    throw error;
   }
 };
 
 export const useSendProduct = () => {
-  const { vars, prods } = useOptionContext();
+  const { vars } = useOptionContext();
   const [amountVariations, setAmountvariations] = vars;
-  const [productCompletion, setProductCompletion] = prods;
   const mutation = useMutation({
     mutationFn: postProductData,
     onError: (error) => {
-      console.error("Error sending product data:", error); 
+      console.error("Error sending product data:", error);
     },
-    onSettled: async (data) => {
-      console.log(data);
-      // setAmountvariations(data.count);
-      setProductCompletion(true);
-      setTimeout(() => {
-        setProductCompletion(false);
-      }, 4000);
+    onSuccess: async (data) => {
+      console.log("succesfully executed", data);
+      setAmountvariations(data.count);
     },
   });
-  // console.log(amountVariations);
   return mutation;
 };

@@ -3,12 +3,13 @@ import { useOptionContext } from "context/Optioncontext";
 import { useEffect, useState } from "react";
 import { useSendProduct } from "hooks/usePost";
 export default function Jenerator() {
-  const { opt, dataSelect, myData, vars, prods } = useOptionContext();
+  const { opt, dataSelect, myData, vars, state } = useOptionContext();
+  const [ready] = state
   const [amountVariations] = vars;
-  const [productCompletion] = prods;
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [customData] = myData;
+  const [productCompletion, setProductCompletion] = useState(false);
   const [toggle, setToggle] = useState(true);
   const fulldata = JSON.stringify(selectedData, null, 1);
   const replacement = JSON.stringify(customData, null, 1);
@@ -17,6 +18,7 @@ export default function Jenerator() {
     : customData && Object.keys(customData).length > 0;
   const { mutate: sendData, status, reset } = useSendProduct();
   const handleClick = () => {
+    if(ready === false) return
     const data = customData;
     console.log(data);
     sendData(data);
@@ -29,16 +31,31 @@ export default function Jenerator() {
     return (
       <>
         <pre
-          className={`text-xs whitespace-pre-wrap bg-white bg-opacity-0 rounded-xl p-1 mr-2 duration-500 ease-in-out cursor-pointer hover:bg-opacity-10 transition-colors`}
+          className={`text-xs whitespace-pre-wrap bg-green-400 bg-opacity-0 rounded-xl p-1 mr-2 duration-500 ease-in-out transition-colors hover:bg-opacity-10 ${ready ? "cursor-pointer" : "bg-red"}`}
           onClick={handleClick}
         >
           {(customData && replacement) || fulldata}
         </pre>
-
-        <div className={`sticky bottom-0 flex flex-col items-center animate-fade-out  ${productCompletion ? "animate-fade-in" : "opacity-0"}`}>
-          <div className={`backdrop-blur-sm ${status === "success" ? "bg-green-400/50" : "bg-red/50"}  w-fit text-center text-white p-2 rounded-2xl mb-2`}>
-            <p>Product operation {status === "success" ? "complete!" : "failed" }</p>
-            {status === "success" && <span>{amountVariations} variations added!</span>}
+        {/* fix this stupid hover */}
+        <div
+          className={`sticky bottom-0 flex flex-col items-center ${
+            productCompletion ? "animate-fade-in opacity-100" : "animate-fade-out opacity-0"
+          }`}
+        >
+          <div
+            className={`backdrop-blur-sm ${
+              status === "success" ? "bg-green-400/50" : "bg-red/50"
+            }  w-fit text-center text-white p-2 rounded-2xl mb-2`}
+          >
+            <p>
+              Product operation {status === "success" ? "complete!" : "failed"}
+            </p>
+            {productCompletion && (
+              <span>
+                {amountVariations !== 0 ? amountVariations : "no"} variations
+                added!
+              </span>
+            )}
           </div>
         </div>
       </>
@@ -74,13 +91,16 @@ export default function Jenerator() {
     );
   };
   const rmOverlay = () => {
+    setTimeout(() => {}, 3700);
     setTimeout(() => {
       reset();
-    }, 1500);
+    }, 4000);
   };
   useEffect(() => {
-    status === "success" || "error" && rmOverlay();
+    (status === "success" || status === "error") && rmOverlay();
+    console.log(status, "but why");
   }, [status]);
+  console.log(status);
   return (
     <>
       {selectedData ? (

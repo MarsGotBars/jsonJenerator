@@ -4,7 +4,8 @@ import { useOptionContext } from "context/Optioncontext";
 import Form from "components/form/Form";
 import Title from "components/layout/Title";
 export default function Customizer() {
-  const { dataSelect, opt, myData } = useOptionContext();
+  const { dataSelect, opt, myData, state } = useOptionContext();
+  const [ready, setReady] = state;
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [customData, setCustomData] = myData;
@@ -99,7 +100,11 @@ export default function Customizer() {
       };
       variants.push(variation);
     });
-    inputData.default_attributes = variants[0]["attributes"];
+    const variantAttributes = variants[0]["attributes"];
+    const hasValues = variantAttributes.every(attribute => attribute.option !== '' && attribute.option !== undefined);
+    setReady(hasValues)
+    console.log(ready);
+    inputData.default_attributes = hasValues ? variants[0]["attributes"] : [];
     inputData.variations = variants;
     // data iteration | Iterate over each key available in variationData
     for (const key in variationData) {
