@@ -35,10 +35,10 @@ export default function Jenerator() {
           {(customData && replacement) || fulldata}
         </pre>
 
-        <div className={`sticky bottom-0 flex flex-col items-center ${productCompletion ? "animate-fade-in" : "animate-fade-out"}`}>
-          <div className="backdrop-blur-sm bg-green-400/50 w-fit text-center text-white p-2 rounded-2xl mb-2">
-            <p>Product sent!</p>
-            <span>{amountVariations} variations added!</span>
+        <div className={`sticky bottom-0 flex flex-col items-center animate-fade-out  ${productCompletion ? "animate-fade-in" : "opacity-0"}`}>
+          <div className={`backdrop-blur-sm ${status === "success" ? "bg-green-400/50" : "bg-red/50"}  w-fit text-center text-white p-2 rounded-2xl mb-2`}>
+            <p>Product operation {status === "success" ? "complete!" : "failed" }</p>
+            {status === "success" && <span>{amountVariations} variations added!</span>}
           </div>
         </div>
       </>
@@ -76,10 +76,10 @@ export default function Jenerator() {
   const rmOverlay = () => {
     setTimeout(() => {
       reset();
-    }, 1000);
+    }, 1500);
   };
   useEffect(() => {
-    status === "success" && rmOverlay();
+    status === "success" || "error" && rmOverlay();
   }, [status]);
   return (
     <>

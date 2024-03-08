@@ -18,7 +18,6 @@ export default function Customizer() {
     gewichten: "",
   });
 
-
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -69,7 +68,19 @@ export default function Customizer() {
 
     // refactor this, as it shouldn't be a loop
     afwerkingen.forEach((afwerking, index) => {
+      if (
+        (!afwerking ||
+          !dikteObj[index] ||
+          !splitSKU[index] ||
+          !prijzen[index] ||
+          !gewichten[index]) &&
+        index !== 0
+      ) {
+        console.log("Skipping item at index", index);
+        return; // Skip this iteration
+      }
       let variation = {
+        menu_order: index,
         attributes: [
           {
             id: 18,
