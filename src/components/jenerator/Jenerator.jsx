@@ -36,7 +36,6 @@ export default function Jenerator() {
         >
           {(customData && replacement) || fulldata}
         </pre>
-        {/* fix this stupid hover */}
         <div
           className={`absolute left-1/2 transform -translate-x-1/2 bottom-0 flex flex-col items-center opacity-0 ${
             status === "success" || status === "error" ? "animate-fade-in" : ""
