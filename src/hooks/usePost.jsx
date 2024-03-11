@@ -20,7 +20,6 @@ const postProductData = async (product) => {
       if (checkProductVariations.length >= 0) {
         const deleteVariations = checkProductVariations.map(
           async (variation) => {
-            console.log(variation);
             await axios.delete(
               `${process.env.REACT_APP_API_URL}${checkProductId}/variations/${variation}?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`
             );
@@ -63,11 +62,10 @@ export const useSendProduct = () => {
   const mutation = useMutation({
     mutationFn: postProductData,
     onError: (error) => {
-      console.error("Error sending product data:", error);
+      console.error("Error sending product data");
       setAmountvariations(0)
     },
     onSuccess: async (data) => {
-      console.log("succesfully executed", data);
       setAmountvariations(data.count ? data.count : 0);
     },
   });

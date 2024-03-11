@@ -19,7 +19,6 @@ export default function Jenerator() {
   const handleClick = () => {
     if (ready === false) return;
     const data = customData;
-    console.log(data);
     sendData(data);
   };
   useEffect(() => {
