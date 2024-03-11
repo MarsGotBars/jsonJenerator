@@ -4,21 +4,20 @@ import { useEffect, useState } from "react";
 import { useSendProduct } from "hooks/usePost";
 export default function Jenerator() {
   const { opt, dataSelect, myData, vars, state } = useOptionContext();
-  const [ready] = state
+  const [ready] = state;
   const [amountVariations] = vars;
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
-  const [customData] = myData;
   const [productCompletion, setProductCompletion] = useState(false);
-  const [toggle, setToggle] = useState(true);
+  const [customData] = myData;
   const fulldata = JSON.stringify(selectedData, null, 1);
   const replacement = JSON.stringify(customData, null, 1);
   const hasData = selectedData
     ? selectedData
     : customData && Object.keys(customData).length > 0;
-  const { mutate: sendData, status, reset } = useSendProduct();
+  const { mutate: sendData, status, reset, error } = useSendProduct();
   const handleClick = () => {
-    if(ready === false) return
+    if (ready === false) return;
     const data = customData;
     console.log(data);
     sendData(data);
@@ -31,30 +30,38 @@ export default function Jenerator() {
     return (
       <>
         <pre
-          className={`text-xs whitespace-pre-wrap bg-green-400 bg-opacity-0 rounded-xl p-1 mr-2 duration-500 ease-in-out transition-colors hover:bg-opacity-10 ${ready ? "cursor-pointer" : "bg-red"}`}
+          className={`text-xs whitespace-pre-wrap bg-green-400 bg-opacity-0 rounded-xl p-1 mr-2 duration-500 ease-in-out transition-colors hover:bg-opacity-10 ${
+            ready ? "cursor-pointer" : "bg-red"
+          }`}
           onClick={handleClick}
         >
           {(customData && replacement) || fulldata}
         </pre>
         {/* fix this stupid hover */}
         <div
-          className={`sticky bottom-0 flex flex-col items-center ${
-            productCompletion ? "animate-fade-in opacity-100" : "animate-fade-out opacity-0"
-          }`}
+          className={`absolute left-1/2 transform -translate-x-1/2 bottom-0 flex flex-col items-center opacity-0 ${
+            status === "success" || status === "error" ? "animate-fade-in" : ""
+          } ${productCompletion ? "animate-fade-out" : ""}`}
         >
           <div
-            className={`backdrop-blur-sm ${
-              status === "success" ? "bg-green-400/50" : "bg-red/50"
+            className={`backdrop-blur-sm pointer-events-none ${
+              status !== "error" ? "bg-green-400/50" : "bg-red/50"
             }  w-fit text-center text-white p-2 rounded-2xl mb-2`}
           >
             <p>
-              Product operation {status === "success" ? "complete!" : "failed"}
+              Product operation {status !== "error" ? "complete!" : "failed"}
             </p>
-            {productCompletion && (
+            {status !== "error" ? (
               <span>
-                {amountVariations !== 0 ? amountVariations : "no"} variations
+                {amountVariations} variations
                 added!
               </span>
+            ) : (
+              <div className="flex flex-col">
+                <span>error code: {error.response.data.data.status}</span>
+                <span>{error.response.data.code === "product_invalid_sku" ? "heb je de correcte steen soort?" : error.response.data.code}</span>
+                <span>{error.response.data.message}</span>
+              </div>
             )}
           </div>
         </div>
@@ -91,16 +98,17 @@ export default function Jenerator() {
     );
   };
   const rmOverlay = () => {
-    setTimeout(() => {}, 3700);
     setTimeout(() => {
+      setProductCompletion(true);
+    }, 3400);
+    setTimeout(() => {
+      setProductCompletion(false);
       reset();
     }, 4000);
   };
   useEffect(() => {
     (status === "success" || status === "error") && rmOverlay();
-    console.log(status, "but why");
   }, [status]);
-  console.log(status);
   return (
     <>
       {selectedData ? (

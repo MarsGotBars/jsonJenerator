@@ -1,17 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useOptionContext } from "../context/Optioncontext";
+import { useState } from "react";
 
 const postProductData = async (product) => {
   let x = 0;
   let productUrl;
   try {
-    console.log(product);
-    // ! experimental
     const checkProductUrl = `${process.env.REACT_APP_API_URL}?slug=${product.slug}&consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
-    console.log("checkProductUrl", checkProductUrl);
     const checkProduct = await axios.get(checkProductUrl);
-    console.log("checkProduct", checkProduct);
     const checkProductVariations =
       checkProduct.data.length !== 0 && checkProduct.data[0].variations;
     const checkProductId =
@@ -39,23 +36,19 @@ const postProductData = async (product) => {
     }?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${
       process.env.REACT_APP_CS
     }`;
-    console.log(productUrl);
     const productResponse = await axios.post(productUrl, product);
-    console.log("product posted!", productResponse);
     const variationsUrl = `${process.env.REACT_APP_API_URL}${
       checkProductId ? checkProductId : productResponse.data.id
     }/variations/?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${
       process.env.REACT_APP_CS
     }`;
-    console.log("product.variations", product.variations);
     const variations = product.variations;
-    const postVarPromises = variations.map(async (obj) => {
-      x++;
+    const postVarPromises = variations.map(async (obj, i) => {
+      x = i+1
       const productVarResponse = await axios.post(variationsUrl, obj);
       return productVarResponse;
     });
-    const variationResponses = await Promise.all(postVarPromises);
-    console.log("posted!", variationResponses);
+    await Promise.all(postVarPromises);
     product.count = x;
     return product;
   } catch (error) {
@@ -71,10 +64,11 @@ export const useSendProduct = () => {
     mutationFn: postProductData,
     onError: (error) => {
       console.error("Error sending product data:", error);
+      setAmountvariations(0)
     },
     onSuccess: async (data) => {
       console.log("succesfully executed", data);
-      setAmountvariations(data.count);
+      setAmountvariations(data.count ? data.count : 0);
     },
   });
   return mutation;

@@ -10,17 +10,17 @@ module.exports = {
   theme: {
     extend: {
       animation:{
-        'fade-in': 'fade-in 300ms ease-in forwards',
-        'fade-out': 'fade-out 300ms ease-out forwards',
+        'fade-in': 'fade-in 600ms ease-in forwards',
+        'fade-out': 'fade-out 600ms ease-out forwards',
       },
       keyframes: {
         'fade-in':{
           '0%': {opacity: '0'},
-          '100%:': {opacity: '1'}
+          '100%': {opacity: '1'}
         },
         'fade-out':{
           '0%': {opacity: '1'},
-          '100%:': {opacity: '0'}
+          '100%': {opacity: '0'}
         },
       },
       colors:{

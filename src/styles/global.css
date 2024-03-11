@@ -33,6 +33,12 @@
   div > input {
     @apply w-full border rounded-md p-2 text-black;
   }
+  .animate-fade-out{
+    @apply opacity-0
+  }
+  .animate-fade-in{
+    @apply opacity-100
+  }
 }
 
 @layer utilities {
