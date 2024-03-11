@@ -91,7 +91,6 @@ export default function Customizer() {
             !gewichten[index]) &&
           index !== 0
         ) {
-          console.log("Skipping item at index", index);
           return; // Skip this iteration
         }
         let variation = {

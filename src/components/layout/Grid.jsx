@@ -37,13 +37,13 @@ export default function Grid({ col, classes }) {
   return (
     <OptionProvider>
       <main className={`${classes}`}>
-        <div className={`row-span-1 col-span-${cols.Rest} justify-evenly`}>
+        <div className={`row-span-1 col-span-${cols.Rest ? cols.Rest : "5"} justify-evenly`}>
           <Customizer/>
         </div>
-        <div className={`row-span-2 col-span-${cols.Large} pr-4 relative`}>
+        <div className={`row-span-2 col-span-${cols.Large ? cols.Large : "7"} pr-4 relative`}>
           <Jenerator />
         </div>
-        <div className={`grid col-span-${cols.Rest} row-span-1 grid-cols-3 grid-rows-3 gap-2`}>
+        <div className={`grid col-span-${cols.Rest ? cols.Rest : "5"} row-span-1 grid-cols-3 grid-rows-3 gap-2`}>
           {!bool && <OptionList options={options} />}
         </div>
       </main>
