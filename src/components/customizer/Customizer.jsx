@@ -225,6 +225,7 @@ export default function Customizer() {
         Submit your data here
       </Title>
       <Form
+        cols={"2"}
         formData={inputValues}
         handleChange={handleChange}
         classes={"flex flex-col items-center gap-6"}
