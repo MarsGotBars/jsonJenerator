@@ -7,7 +7,7 @@ export const OptionProvider = ({ children }) => {
   const [selectedData, setSelectedData] = useState(null);
   const [customData, setCustomData] = useState(null);
   const [amountVariations, setAmountvariations] = useState(0);
-  const [ready, setReady] = useState(false)
+  const [ready, setReady] = useState(false);
   return (
     <OptionContext.Provider
       value={{

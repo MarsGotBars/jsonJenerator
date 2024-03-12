@@ -758,7 +758,7 @@ const data = {
       },
     ],
     stock_status: "instock",
-    has_options: true
+    has_options: true,
   },
 };
 

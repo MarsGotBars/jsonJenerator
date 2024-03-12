@@ -91,7 +91,7 @@ export default function Customizer() {
             !gewichten[index]) &&
           index !== 0
         ) {
-          return; // Skip this iteration
+          return;
         }
         let variation = {
           menu_order: index,

@@ -43,7 +43,7 @@ const postProductData = async (product) => {
     }`;
     const variations = product.variations;
     const postVarPromises = variations.map(async (obj, i) => {
-      x = i+1
+      x = i + 1;
       const productVarResponse = await axios.post(variationsUrl, obj);
       return productVarResponse;
     });
@@ -63,7 +63,7 @@ export const useSendProduct = () => {
     mutationFn: postProductData,
     onError: (error) => {
       console.error("Error sending product data");
-      setAmountvariations(0)
+      setAmountvariations(0);
     },
     onSuccess: async (data) => {
       setAmountvariations(data.count ? data.count : 0);

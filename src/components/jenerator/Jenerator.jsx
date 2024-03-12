@@ -50,14 +50,15 @@ export default function Jenerator() {
               Product operation {status !== "error" ? "complete!" : "failed"}
             </p>
             {status !== "error" ? (
-              <span>
-                {amountVariations} variations
-                added!
-              </span>
+              <span>{amountVariations} variations added!</span>
             ) : (
               <div className="flex flex-col">
                 <span>error code: {error.response.data.data.status}</span>
-                <span>{error.response.data.code === "product_invalid_sku" ? "heb je de correcte steen soort?" : error.response.data.code}</span>
+                <span>
+                  {error.response.data.code === "product_invalid_sku"
+                    ? "heb je de correcte steen soort?"
+                    : error.response.data.code}
+                </span>
                 <span>{error.response.data.message}</span>
               </div>
             )}
