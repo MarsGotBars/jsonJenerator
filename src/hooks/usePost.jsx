@@ -66,6 +66,7 @@ export const useSendProduct = () => {
       setAmountvariations(0)
     },
     onSuccess: async (data) => {
+      console.log(data);
       setAmountvariations(data.count ? data.count : 0);
     },
   });
