@@ -23,21 +23,9 @@ export default function Customizer() {
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
-      let obj = {};
-      let result = value
-        .toLowerCase()
-        .split(/\s+/)
-        .map((word) => {
-          if (!(word in obj)) {
-            obj[word] = true;
-            return word.charAt(0).toUpperCase() + word.slice(1);
-          }
-        })
-        .filter(Boolean)
-        .join(" ");
       setInputValues((prevState) => ({
         ...prevState,
-        [name]: result,
+        [name]: value,
       }));
     },
     [setInputValues]
@@ -79,7 +67,9 @@ export default function Customizer() {
         dikteObj[index] = `${match[1]} ${match[2]}`;
         if (
           dikteObj[index] === "3,2-8,2 cm" ||
-          dikteObj[index] === "2,9-7,9 cm"
+          dikteObj[index] === "2,9-7,9 cm" ||
+          dikteObj[index] === "4-8 cm" ||
+          dikteObj[index] === "3-8 cm"
         ) {
           dikteObj[index] += " opgedikt in verstek";
         } else dikteObj[index] += " massief";
@@ -164,8 +154,12 @@ export default function Customizer() {
 
   const changeCurrentDescription = useCallback(() => {
     let description = "";
-    const name =
-      inputValues.naam.charAt(0).toUpperCase() + inputValues.naam.slice(1);
+    const name = inputValues.naam
+          .toLowerCase()
+          .split(/\s+/)
+          .filter((word, index, array) => array.indexOf(word) === index)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
     const keys = Object.keys(text);
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
@@ -212,9 +206,17 @@ export default function Customizer() {
 
   const handleFind = useCallback(
     (inputValues) => {
+      if (inputValues.naam.trim() !== "") {
+        // Remove duplicate words from the "naam" field
+        const uniqueName = inputValues.naam
+          .toLowerCase()
+          .split(/\s+/)
+          .filter((word, index, array) => array.indexOf(word) === index)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
       const updatedData = findStrInObj(
         selectedData,
-        inputValues.naam,
+        uniqueName,
         "Replace-me"
       );
       // Generate custom data
@@ -222,6 +224,7 @@ export default function Customizer() {
 
       // Update the customData state only once at the end
       setCustomData(customData);
+      }
     },
     [selectedData, handleGeneration, findStrInObj, setCustomData]
   );
