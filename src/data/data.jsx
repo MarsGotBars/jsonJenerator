@@ -1037,7 +1037,7 @@ const data = {
         slug: "pa_afwerking",
         position: 0,
         visible: true,
-        variation: false,
+        variation: true,
         options: ["Gepolijst of Glanzend"],
       },
       {
@@ -1248,7 +1248,7 @@ const data = {
         slug: "pa_afwerking",
         position: 1,
         visible: true,
-        variation: false,
+        variation: true,
         options: ["Mat"],
       },
       {
