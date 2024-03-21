@@ -23,9 +23,19 @@ export default function Customizer() {
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
+      let filtered = Object.values(
+        value
+          .toLowerCase()
+          .split(" ")
+          .reduce((acc, word) => {
+            acc[word] = word.charAt(0).toUpperCase() + word.slice(1);
+            return acc;
+          }, {})
+      );
+      let result = filtered.join(" ");
       setInputValues((prevState) => ({
         ...prevState,
-        [name]: value,
+        [name]: result,
       }));
     },
     [setInputValues]
