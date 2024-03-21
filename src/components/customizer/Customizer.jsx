@@ -159,7 +159,8 @@ export default function Customizer() {
           .split(/\s+/)
           .filter((word, index, array) => array.indexOf(word) === index)
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
+          .join(" ")
+          .trim();
     const keys = Object.keys(text);
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
