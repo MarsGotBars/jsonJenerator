@@ -1115,7 +1115,7 @@ const data = {
       {
         id: 192664,
         key: "rank_math_title",
-        value: "Replace-me Caesarstone Composiet kopen bij StoneCenter",
+        value: "Replace-me Caesarstone Composiet Keukenblad kopen bij StoneCenter",
       },
       {
         id: 192665,
