@@ -155,12 +155,12 @@ export default function Customizer() {
   const changeCurrentDescription = useCallback(() => {
     let description = "";
     const name = inputValues.naam
-          .toLowerCase()
-          .split(/\s+/)
-          .filter((word, index, array) => array.indexOf(word) === index)
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ")
-          .trim();
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((word, index, array) => array.indexOf(word) === index)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+      .trim();
     const keys = Object.keys(text);
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
@@ -207,25 +207,18 @@ export default function Customizer() {
 
   const handleFind = useCallback(
     (inputValues) => {
-      if (inputValues.naam.trim() !== "") {
-        // Remove duplicate words from the "naam" field
-        const uniqueName = inputValues.naam
-          .toLowerCase()
-          .split(/\s+/)
-          .filter((word, index, array) => array.indexOf(word) === index)
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
-      const updatedData = findStrInObj(
-        selectedData,
-        uniqueName,
-        "Replace-me"
-      );
+      const uniqueName = inputValues.naam
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((word, index, array) => array.indexOf(word) === index)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+      const updatedData = findStrInObj(selectedData, uniqueName, "Replace-me");
       // Generate custom data
       const customData = handleGeneration(inputValues, updatedData);
 
       // Update the customData state only once at the end
       setCustomData(customData);
-      }
     },
     [selectedData, handleGeneration, findStrInObj, setCustomData]
   );
