@@ -3,9 +3,10 @@ import { useOptionContext } from "context/Optioncontext";
 import { useEffect, useState } from "react";
 import { useSendProduct } from "hooks/usePost";
 export default function Jenerator() {
-  const { opt, dataSelect, myData, vars, state } = useOptionContext();
+  const { opt, dataSelect, myData, vars, failures, state } = useOptionContext();
   const [ready] = state;
   const [amountVariations] = vars;
+  const [amountFailures] = failures
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [productCompletion, setProductCompletion] = useState(false);
@@ -50,14 +51,18 @@ export default function Jenerator() {
               Product operation {status !== "error" ? "complete!" : "failed"}
             </p>
             {status !== "error" ? (
-              <span>
-                {amountVariations} variations
-                added!
-              </span>
+              <div className="flex flex-col">
+                <span>{amountVariations} variations added!</span>
+                {amountFailures && <span>{amountFailures} failed!</span>}
+              </div>
             ) : (
               <div className="flex flex-col">
                 <span>error code: {error.response.data.data.status}</span>
-                <span>{error.response.data.code === "product_invalid_sku" ? "heb je de correcte steen soort?" : error.response.data.code}</span>
+                <span>
+                  {error.response.data.code === "product_invalid_sku"
+                    ? "heb je de correcte steen soort?"
+                    : error.response.data.code}
+                </span>
                 <span>{error.response.data.message}</span>
               </div>
             )}

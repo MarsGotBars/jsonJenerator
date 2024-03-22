@@ -7,6 +7,7 @@ export const OptionProvider = ({ children }) => {
   const [selectedData, setSelectedData] = useState(null);
   const [customData, setCustomData] = useState(null);
   const [amountVariations, setAmountvariations] = useState(0);
+  const [amountFailures, setAmountFailures] = useState(0)
   const [ready, setReady] = useState(false)
   return (
     <OptionContext.Provider
@@ -15,6 +16,7 @@ export const OptionProvider = ({ children }) => {
         dataSelect: [selectedData, setSelectedData],
         myData: [customData, setCustomData],
         vars: [amountVariations, setAmountvariations],
+        failures: [amountFailures, setAmountFailures],
         state: [ready, setReady],
       }}
     >
