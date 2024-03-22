@@ -154,13 +154,18 @@ export default function Customizer() {
 
   const changeCurrentDescription = useCallback(() => {
     let description = "";
-    const name = inputValues.naam
-      .toLowerCase()
-      .split(/\s+/)
-      .filter((word, index, array) => array.indexOf(word) === index)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
-      .trim();
+    const words = inputValues.naam.split(/\s+/);
+    const uniqueWords = [];
+    const uniqueLowercaseWords = [];
+
+    words.forEach((word) => {
+      const lowercaseWord = word.toLowerCase();
+      if (!uniqueLowercaseWords.includes(lowercaseWord)) {
+        uniqueWords.push(word);
+        uniqueLowercaseWords.push(lowercaseWord);
+      }
+    });
+    const name = uniqueWords.join(" ");
     const keys = Object.keys(text);
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
