@@ -53,11 +53,11 @@ export default function Jenerator() {
             {status !== "error" ? (
               <div className="flex flex-col">
                 <span>{amountVariations} variations added!</span>
-                {amountFailures && <span>{amountFailures} failed!</span>}
+                {!(amountFailures !== "0") && <span>{amountFailures} failed!</span>}
               </div>
             ) : (
               <div className="flex flex-col">
-                <span>error code: {error.response.data.data.status}</span>
+                <span>error code: {error?.response.data.data.status}</span>
                 <span>
                   {error.response.data.code === "product_invalid_sku"
                     ? "heb je de correcte steen soort?"

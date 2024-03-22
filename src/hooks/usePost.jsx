@@ -46,20 +46,17 @@ const postProductData = async (product) => {
     const postVarPromises = variations.map(async (obj, i) => {
       try{
       x = i+1
-      console.log("obj", obj);
       const productVarResponse = await axios.post(variationsUrl, obj);
-      console.log(productVarResponse.data);
-      console.log(obj.sku);
       return productVarResponse;
       }
       catch (error) {
         x = x-1
         const failedUrl = `${process.env.REACT_APP_API_URL}?sku=${obj.sku}&consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
         const failedRes = await axios.get(failedUrl)
-        const failure = failedRes.data[0].id;
-        y = failedRes.data.length
+        const failure = failedRes.data[0]?.id;
+        y = failedRes.data?.length
         console.log("consider removing the following product", `https://stonecenter-shop.nl/wp-admin/post.php?post=${failure}&action=edit`);
-        return
+        return null
       }
     });
     await Promise.all(postVarPromises);
