@@ -18,7 +18,7 @@ const postProductData = async (product) => {
       console.log("creating new product...");
     } else {
       console.log("updating existing product...");
-      if (checkProductVariations.length >= 0) {
+      if (checkProductVariations && checkProductVariations.length > 0) { // Check if variations exist
         const deleteVariations = checkProductVariations.map(
           async (variation) => {
             await axios.delete(
@@ -27,10 +27,13 @@ const postProductData = async (product) => {
           }
         );
         await Promise.all(deleteVariations);
-        console.log("variations deleted succesfully");
-      } else return;
+        console.log("variations deleted successfully");
+      } else {
+        console.log("No variations to delete.");
+      }
     }
-    // properly working
+
+    // Properly working
     productUrl = `${process.env.REACT_APP_API_URL}${
       checkProductId ? checkProductId : ""
     }?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${
@@ -45,9 +48,9 @@ const postProductData = async (product) => {
     const variations = product.variations;
     const postVarPromises = variations.map(async (obj, i) => {
       try{
-      x = i+1
-      const productVarResponse = await axios.post(variationsUrl, obj);
-      return productVarResponse;
+        x = i+1
+        const productVarResponse = await axios.post(variationsUrl, obj);
+        return productVarResponse;
       }
       catch (error) {
         x = x-1
@@ -72,16 +75,16 @@ const postProductData = async (product) => {
 export const useSendProduct = () => {
   const { vars, failures } = useOptionContext();
   const [amountVariations, setAmountvariations] = vars;
-  const [amountFailures, setAmountFailures] = failures
+  const [amountFailures, setAmountFailures] = failures;
   const mutation = useMutation({
     mutationFn: postProductData,
     onError: (error) => {
       console.error("Error sending product data", error.message);
-      setAmountvariations(0)
+      setAmountvariations(0);
     },
     onSuccess: async (data) => {
       console.log(data);
-      setAmountFailures(data.fail ? data.fail : 0)
+      setAmountFailures(data.fail ? data.fail : 0);
       setAmountvariations(data.count ? data.count : 0);
     },
   });
