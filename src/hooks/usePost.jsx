@@ -51,7 +51,7 @@ const postProductData = async (product) => {
     product.count = x;
     return product;
   } catch (error) {
-    console.error("Error processing data", error.response?.data.code);
+    console.error("Error processing data", error.message);
     throw error;
   }
 };
@@ -62,7 +62,7 @@ export const useSendProduct = () => {
   const mutation = useMutation({
     mutationFn: postProductData,
     onError: (error) => {
-      console.error("Error sending product data");
+      console.error("Error sending product data", error.message);
       setAmountvariations(0)
     },
     onSuccess: async (data) => {

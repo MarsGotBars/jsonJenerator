@@ -4,7 +4,7 @@ import React, { useState } from "react";
 function App() {
   const maxCols = 9
   const minCols = 4
-  const [cols, setCols] = useState(7);
+  const [cols, setCols] = useState(9);
   const handleClick = (action) => {
     if (action === "reduce" && cols > minCols) {
       // Reduce cols by 1 if it's greater than the minimum value

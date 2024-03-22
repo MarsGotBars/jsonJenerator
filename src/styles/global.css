@@ -60,4 +60,8 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-darkRed;
   }
+
+  ::selection {
+    @apply bg-slate-500 mix-blend-difference
+  }
 }

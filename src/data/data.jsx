@@ -1234,15 +1234,6 @@ const data = {
     ],
     attributes: [
       {
-        id: 0,
-        name: "Composiet",
-        slug: "Composiet",
-        position: 0,
-        visible: true,
-        variation: false,
-        options: ["vrij wel Kras bestendig, Onderhoudsvrij, Hygiënisch,"],
-      },
-      {
         id: 1,
         name: "Afwerking",
         slug: "pa_afwerking",

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSendProduct } from "hooks/usePost";
+import Btn from "../Btn/Btn";
 import text from "../../data/text";
 import { useOptionContext } from "context/Optioncontext";
 import Form from "components/form/Form";
@@ -18,6 +19,7 @@ export default function Customizer() {
     "keukenblad dikte": "",
     prijzen: "",
     gewichten: "",
+    publish: false,
   });
 
   const handleChange = useCallback(
@@ -34,11 +36,12 @@ export default function Customizer() {
   useEffect(() => {
     let allValuesFilled = true;
     Object.values(inputValues).forEach((val) => {
-      if (val.trim() === "") {
+      // Check if val is a string before calling trim()
+      if (typeof val === 'string' && val.trim() === "") {
         allValuesFilled = false;
       }
     });
-
+  
     // Set ready based on allValuesFilled
     setReady(allValuesFilled);
   }, [inputValues, setReady]);
@@ -50,6 +53,7 @@ export default function Customizer() {
         naam,
         SKUs,
         ["keukenblad dikte"]: keukenbladDikte,
+        publish,
         ...variationData
       } = inputValues;
       // SKU data
@@ -69,15 +73,21 @@ export default function Customizer() {
           dikteObj[index] === "3,2-8,2 cm" ||
           dikteObj[index] === "2,9-7,9 cm" ||
           dikteObj[index] === "4-8 cm" ||
-          dikteObj[index] === "3-8 cm"
+          dikteObj[index] === "3-8 cm" ||
+          dikteObj[index] === "4,2-8,2 cm"
         ) {
           dikteObj[index] += " opgedikt in verstek";
         } else dikteObj[index] += " massief";
         index++;
       }
+
+      inputData.status = publish ? "publish" : "draft"
       // ! format thickness
       const attributes = inputData.attributes;
-      attributes[0].options = dikteObj;
+      
+      for(const atr in attributes){
+        if(attributes[atr].name === "Keukenblad dikte") attributes[atr].options = dikteObj;
+      }
       // attributes and variation generation
       const prijzen = variationData.prijzen.split(" ");
       const gewichten = variationData.gewichten.split(" ");
@@ -239,17 +249,32 @@ export default function Customizer() {
       handleFind(inputValues);
     }
   }, [inputValues, selectedOption]);
+
+  const filteredFormData = Object.keys(inputValues)
+    .filter(key => key !== 'publish')
+    .reduce((obj, key) => {
+      obj[key] = inputValues[key];
+      return obj;
+    }, {});
+
+    const swap = () => {
+      setInputValues(prevState => ({
+        ...prevState,
+        publish: !prevState.publish // Toggling the value of publish
+      }));
+    };
   return (
     <>
       <Title classes={"font-bold text-lg text-center"}>
         Submit your data here
       </Title>
       <Form
-        formData={inputValues}
+        formData={filteredFormData}
         handleChange={handleChange}
         classes={"flex flex-col items-center gap-6"}
       />
-      <div></div>
+      <div className=" w-8"></div>
+      <Btn onClick={swap} classes={`${!inputValues.publish ? "bg-red" : "bg-lime-500"} w-1/6 place-self-center px-3 py-1`}>{inputValues.publish ? "public" : "draft"}</Btn>
     </>
   );
 }
