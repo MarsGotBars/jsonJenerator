@@ -207,12 +207,18 @@ export default function Customizer() {
 
   const handleFind = useCallback(
     (inputValues) => {
-      const uniqueName = inputValues.naam
-        .toLowerCase()
-        .split(/\s+/)
-        .filter((word, index, array) => array.indexOf(word) === index)
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
+      const words = inputValues.naam.split(/\s+/);
+      const uniqueWords = [];
+      const uniqueLowercaseWords = [];
+
+      words.forEach((word) => {
+        const lowercaseWord = word.toLowerCase();
+        if (!uniqueLowercaseWords.includes(lowercaseWord)) {
+          uniqueWords.push(word);
+          uniqueLowercaseWords.push(lowercaseWord);
+        }
+      });
+      const uniqueName = uniqueWords.join(" ");
       const updatedData = findStrInObj(selectedData, uniqueName, "Replace-me");
       // Generate custom data
       const customData = handleGeneration(inputValues, updatedData);
