@@ -108,7 +108,6 @@ export default function Customizer() {
           regular_price: prijzen[index],
           weight: gewichten[index],
         };
-        console.log(variation);
         variants.push(variation);
       });
       const variantAttributes = variants[0]["attributes"];
