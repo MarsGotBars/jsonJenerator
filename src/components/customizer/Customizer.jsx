@@ -96,7 +96,7 @@ export default function Customizer() {
             {
               id: 18,
               name: "Keukenblad dikte",
-              option: diktes[index],
+              option: diktes[index] ? diktes[index] : "empty",
             },
             {
               id: 1,
