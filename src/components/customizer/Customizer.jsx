@@ -37,11 +37,11 @@ export default function Customizer() {
     let allValuesFilled = true;
     Object.values(inputValues).forEach((val) => {
       // Check if val is a string before calling trim()
-      if (typeof val === 'string' && val.trim() === "") {
+      if (typeof val === "string" && val.trim() === "") {
         allValuesFilled = false;
       }
     });
-  
+
     // Set ready based on allValuesFilled
     setReady(allValuesFilled);
   }, [inputValues, setReady]);
@@ -61,32 +61,17 @@ export default function Customizer() {
       let productSKU = splitSKU[0] + "a";
       inputData.sku = productSKU;
       // ! SKU data
-      // format thickness
-      const splitRegex = /(\d+(?:,\d+)?(?:-\d+(?:,\d+)?)?)\s*(\w+)/g;
-      const dikteObj = {};
-      let match;
-      let index = 0;
+      const diktes = keukenbladDikte.length != 0 ? keukenbladDikte.match(
+        /\d+(?:,\d+)?(?:-\d+(?:,\d+)?)?(?: cm)?(?: opgedikt \(\d+mm\))?/g
+      ) : "";
 
-      while ((match = splitRegex.exec(keukenbladDikte)) !== null) {
-        dikteObj[index] = `${match[1]} ${match[2]}`;
-        if (
-          dikteObj[index] === "3,2-8,2 cm" ||
-          dikteObj[index] === "2,9-7,9 cm" ||
-          dikteObj[index] === "4-8 cm" ||
-          dikteObj[index] === "3-8 cm" ||
-          dikteObj[index] === "4,2-8,2 cm"
-        ) {
-          dikteObj[index] += " opgedikt in verstek";
-        } else dikteObj[index] += " massief";
-        index++;
-      }
-
-      inputData.status = publish ? "publish" : "draft"
+      inputData.status = publish ? "publish" : "draft";
       // ! format thickness
       const attributes = inputData.attributes;
-      
-      for(const atr in attributes){
-        if(attributes[atr].name === "Keukenblad dikte") attributes[atr].options = dikteObj;
+
+      for (const atr in attributes) {
+        if (attributes[atr].name === "Keukenblad dikte")
+          attributes[atr].options = diktes;
       }
       // attributes and variation generation
       const prijzen = variationData.prijzen.split(" ");
@@ -97,7 +82,7 @@ export default function Customizer() {
       afwerkingen.forEach((afwerking, index) => {
         if (
           (!afwerking ||
-            !dikteObj[index] ||
+            !diktes[index] ||
             !splitSKU[index] ||
             !prijzen[index] ||
             !gewichten[index]) &&
@@ -111,7 +96,7 @@ export default function Customizer() {
             {
               id: 18,
               name: "Keukenblad dikte",
-              option: dikteObj[index],
+              option: diktes[index],
             },
             {
               id: 1,
@@ -123,6 +108,7 @@ export default function Customizer() {
           regular_price: prijzen[index],
           weight: gewichten[index],
         };
+        console.log(variation);
         variants.push(variation);
       });
       const variantAttributes = variants[0]["attributes"];
@@ -201,7 +187,7 @@ export default function Customizer() {
     });
   };
 
-  const findStrInObj = (obj, name, toReplace) => {
+  const findStrInObj = useCallback((obj, name, toReplace) => {
     const updatedObj = { ...obj };
     for (const key in updatedObj) {
       if (typeof updatedObj[key] === "string") {
@@ -218,7 +204,7 @@ export default function Customizer() {
       }
     }
     return updatedObj;
-  };
+  }, []);
 
   const handleFind = useCallback(
     (inputValues) => {
@@ -251,18 +237,18 @@ export default function Customizer() {
   }, [inputValues, selectedOption]);
 
   const filteredFormData = Object.keys(inputValues)
-    .filter(key => key !== 'publish')
+    .filter((key) => key !== "publish")
     .reduce((obj, key) => {
       obj[key] = inputValues[key];
       return obj;
     }, {});
 
-    const swap = () => {
-      setInputValues(prevState => ({
-        ...prevState,
-        publish: !prevState.publish // Toggling the value of publish
-      }));
-    };
+  const swap = () => {
+    setInputValues((prevState) => ({
+      ...prevState,
+      publish: !prevState.publish, // Toggling the value of publish
+    }));
+  };
   return (
     <>
       <Title classes={"font-bold text-lg text-center"}>
@@ -274,7 +260,14 @@ export default function Customizer() {
         classes={"flex flex-col items-center gap-6"}
       />
       <div className=" w-8"></div>
-      <Btn onClick={swap} classes={`${!inputValues.publish ? "bg-red" : "bg-lime-500"} w-1/6 place-self-center px-3 py-1`}>{inputValues.publish ? "public" : "draft"}</Btn>
+      <Btn
+        onClick={swap}
+        classes={`${
+          !inputValues.publish ? "bg-red" : "bg-lime-500"
+        } w-1/6 place-self-center px-3 py-1`}
+      >
+        {inputValues.publish ? "public" : "draft"}
+      </Btn>
     </>
   );
 }
