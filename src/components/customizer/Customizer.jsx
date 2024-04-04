@@ -62,7 +62,7 @@ export default function Customizer() {
       inputData.sku = productSKU;
       // ! SKU data
       const diktes = keukenbladDikte.length != 0 ? keukenbladDikte.match(
-        /\d+(?:,\d+)?(?:-\d+(?:,\d+)?)?(?: cm)?(?: opgedikt \(\d+mm\))?/g
+        /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?/g
       ) : "";
 
       inputData.status = publish ? "publish" : "draft";
@@ -108,6 +108,7 @@ export default function Customizer() {
           regular_price: prijzen[index],
           weight: gewichten[index],
         };
+        console.log(variation.attributes[0]);
         variants.push(variation);
       });
       const variantAttributes = variants[0]["attributes"];
