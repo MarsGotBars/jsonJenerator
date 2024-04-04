@@ -142,7 +142,7 @@ export default function Customizer() {
       // lastly format the correct description!
       inputData.description = changeCurrentDescription();
       inputData.slug =
-        inputData.name && inputData.name.toLowerCase().split(" ").join("-");
+        inputData.name && inputData.name.toLowerCase().split(" ").join("-").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       return inputData;
     },
     [inputValues, selectedOption]
