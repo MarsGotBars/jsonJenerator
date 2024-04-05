@@ -117,7 +117,7 @@ export default function Customizer() {
       // refactor this, as it shouldn't be a loop
       afwerkingen.forEach((afwerking, index) => {
         if (
-          (!afwerking[index] ||
+          (!afwerking ||
             !diktes[index] ||
             !splitSKU[index] ||
             !prijzen[index] ||
