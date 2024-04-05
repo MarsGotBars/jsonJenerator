@@ -61,9 +61,16 @@ export default function Customizer() {
       let productSKU = splitSKU[0] + "a";
       inputData.sku = productSKU;
       // ! SKU data
-        const diktes = keukenbladDikte.length != 0 ? /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g.test(keukenbladDikte) ? keukenbladDikte.match(
-          /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g
-      ) : "" : "";
+      const diktes =
+        keukenbladDikte.length != 0
+          ? /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g.test(
+              keukenbladDikte
+            )
+            ? keukenbladDikte.match(
+                /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g
+              )
+            : ""
+          : "";
 
       inputData.status = publish ? "publish" : "draft";
       // ! format thickness
@@ -142,7 +149,13 @@ export default function Customizer() {
       // lastly format the correct description!
       inputData.description = changeCurrentDescription();
       inputData.slug =
-        inputData.name && inputData.name.toLowerCase().split(" ").join("-").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        inputData.name &&
+        inputData.name
+          .toLowerCase()
+          .split(" ")
+          .join("-")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
       return inputData;
     },
     [inputValues, selectedOption]
@@ -259,15 +272,16 @@ export default function Customizer() {
         handleChange={handleChange}
         classes={"flex flex-col items-center gap-6"}
       />
-      <div className=" w-8"></div>
-      <Btn
-        onClick={swap}
-        classes={`${
-          !inputValues.publish ? "bg-red" : "bg-lime-500"
-        } w-1/6 place-self-center px-3 py-1`}
-      >
-        {inputValues.publish ? "public" : "draft"}
-      </Btn>
+      <div className="w-full grid place-items-center">
+        <Btn
+          onClick={swap}
+          classes={`${
+            !inputValues.publish ? "bg-red" : "bg-lime-500"
+          } w-fit place-self-center px-3 py-1`}
+        >
+          {inputValues.publish ? "public" : "draft"}
+        </Btn>
+      </div>
     </>
   );
 }

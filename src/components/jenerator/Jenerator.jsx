@@ -121,7 +121,7 @@ export default function Jenerator() {
       ) : (
         <Title>Select a template!</Title>
       )}
-      <div className="overflow-y-scroll mt-2">
+      <div className="overflow-y-scroll overflow-x-clip mt-2">
         {status !== "idle" && <Overlay />}
         {hasData ? (
           <UsableData />
