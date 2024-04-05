@@ -12,7 +12,7 @@ export default function Customizer() {
   const [selectedData] = dataSelect;
   // eslint-disable-next-line
   const [customData, setCustomData] = myData;
-
+  const [vars, setVars] = useState(0)
   const [inputValues, setInputValues] = useState({
     naam: "",
     SKUs: "",
@@ -117,12 +117,11 @@ export default function Customizer() {
       // refactor this, as it shouldn't be a loop
       afwerkingen.forEach((afwerking, index) => {
         if (
-          (!afwerking ||
+          (!afwerking[index] ||
             !diktes[index] ||
             !splitSKU[index] ||
             !prijzen[index] ||
-            !gewichten[index]) &&
-          index !== 0
+            !gewichten[index])
         ) {
           return; // Skip this iteration
         }
@@ -147,8 +146,9 @@ export default function Customizer() {
         console.log(variation.attributes[0].option);
         variants.push(variation);
       });
-      const variantAttributes = variants[0]["attributes"];
-      const hasValues = variantAttributes.every(
+      setVars(variants.length);
+      const variantAttributes = variants.length > 0 && variants[0]["attributes"];
+      const hasValues = variantAttributes && variantAttributes.every(
         (attribute) => attribute.option !== "" && attribute.option !== undefined
       );
       inputData.default_attributes = hasValues ? variants[0]["attributes"] : [];
@@ -276,7 +276,7 @@ export default function Customizer() {
         handleChange={handleChange}
         classes={"flex flex-col items-center gap-6"}
       />
-      <div className="w-full grid place-items-center">
+      <div className="w-full flex justify-center relative">
         <Btn
           onClick={swap}
           classes={`${
@@ -285,6 +285,10 @@ export default function Customizer() {
         >
           {inputValues.publish ? "public" : "draft"}
         </Btn>
+        {vars > 0 && <div className="absolute right-0 top-1/2 -translate-y-1/2 text-center">
+          <p>{vars}</p>
+          <span>variation{vars > 1 ? 's' : ''}</span>
+        </div>}
       </div>
     </>
   );
