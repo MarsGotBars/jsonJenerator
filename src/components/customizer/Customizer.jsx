@@ -61,9 +61,9 @@ export default function Customizer() {
       let productSKU = splitSKU[0] + "a";
       inputData.sku = productSKU;
       // ! SKU data
-      const diktes = keukenbladDikte.length != 0 ? keukenbladDikte.match(
-        /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?/g
-      ) : "";
+        const diktes = keukenbladDikte.length != 0 ? /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g.test(keukenbladDikte) ? keukenbladDikte.match(
+          /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g
+      ) : "" : "";
 
       inputData.status = publish ? "publish" : "draft";
       // ! format thickness

@@ -6,7 +6,7 @@ export default function Jenerator() {
   const { opt, dataSelect, myData, vars, failures, state } = useOptionContext();
   const [ready] = state;
   const [amountVariations] = vars;
-  const [amountFailures] = failures
+  const [amountFailures] = failures;
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
   const [productCompletion, setProductCompletion] = useState(false);
@@ -53,11 +53,13 @@ export default function Jenerator() {
             {status !== "error" ? (
               <div className="flex flex-col">
                 <span>{amountVariations} variations added!</span>
-                {!(amountFailures !== "0") && <span>{amountFailures} failed!</span>}
+                {!(amountFailures !== "0") && (
+                  <span>{amountFailures} failed!</span>
+                )}
               </div>
             ) : (
               <div className="flex flex-col">
-                <span>error code: {error?.response.data.data.status}</span>
+                <span>error code: {error?.response?.data?.data.status}</span>
                 <span>
                   {error.response.data.code === "product_invalid_sku"
                     ? "heb je de correcte steen soort?"

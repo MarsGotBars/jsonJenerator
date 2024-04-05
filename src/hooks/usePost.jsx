@@ -20,14 +20,14 @@ const postProductData = async (product) => {
       console.log("updating existing product...");
       if (checkProductVariations && checkProductVariations.length > 0) { // Check if variations exist
         const deleteVariations = checkProductVariations.map(
-          async (variation) => {
+          async (variation, i) => {
             await axios.delete(
               `${process.env.REACT_APP_API_URL}${checkProductId}/variations/${variation}?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`
             );
           }
         );
         await Promise.all(deleteVariations);
-        console.log("variations deleted successfully");
+        console.log(`${checkProductVariations.length} variation${checkProductVariations.length>1?'s':''} deleted successfully`);
       } else {
         console.log("No variations to delete.");
       }
