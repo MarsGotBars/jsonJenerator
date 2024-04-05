@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useOptionContext } from "../context/Optioncontext";
-import { useState } from "react";
 
 const postProductData = async (product) => {
   let x = 0;

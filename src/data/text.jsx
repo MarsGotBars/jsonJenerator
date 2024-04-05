@@ -1,3 +1,4 @@
+/* eslint no-useless-escape: 0 */
 const text = {
   Diresco: `<h1><strong> to-replace Diresco composiet keukenblad</strong></h1>
     Alle Diresco composietbladen zijn gemaakt door middel van hun unieke BIO-UV technologie, een technologie waarbij plantaardige harsen met UV-stabilisatoren aan de natuurlijke granulaten worden toegevoegd.

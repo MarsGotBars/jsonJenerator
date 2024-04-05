@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useSendProduct } from "hooks/usePost";
 import Btn from "../Btn/Btn";
 import text from "../../data/text";
 import { useOptionContext } from "context/Optioncontext";
@@ -7,15 +6,18 @@ import Form from "components/form/Form";
 import Title from "components/layout/Title";
 export default function Customizer() {
   const { dataSelect, opt, myData, state } = useOptionContext();
+  // eslint-disable-next-line
   const [ready, setReady] = state;
   const [selectedOption] = opt;
   const [selectedData] = dataSelect;
+  // eslint-disable-next-line
   const [customData, setCustomData] = myData;
 
   const [inputValues, setInputValues] = useState({
     naam: "",
     SKUs: "",
     afwerking: "",
+    // eslint-disable-next-line
     "keukenblad dikte": "",
     prijzen: "",
     gewichten: "",
@@ -32,6 +34,31 @@ export default function Customizer() {
     },
     [setInputValues]
   );
+
+  const changeCurrentDescription = useCallback(() => {
+    let description = "";
+    const words = inputValues.naam.split(/\s+/);
+    const uniqueWords = [];
+    const uniqueLowercaseWords = [];
+
+    words.forEach((word) => {
+      const lowercaseWord = word.toLowerCase();
+      if (!uniqueLowercaseWords.includes(lowercaseWord)) {
+        uniqueWords.push(word);
+        uniqueLowercaseWords.push(lowercaseWord);
+      }
+    });
+    const name = uniqueWords.join(" ");
+    const keys = Object.keys(text);
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
+      if (selectedOption === key) {
+        description = text[key].replace(/to-replace/g, name);
+        break;
+      }
+    }
+    return description;
+  }, [inputValues.naam, selectedOption]);
 
   useEffect(() => {
     let allValuesFilled = true;
@@ -52,6 +79,7 @@ export default function Customizer() {
       const {
         naam,
         SKUs,
+        // eslint-disable-next-line
         ["keukenblad dikte"]: keukenbladDikte,
         publish,
         ...variationData
@@ -62,7 +90,7 @@ export default function Customizer() {
       inputData.sku = productSKU;
       // ! SKU data
       const diktes =
-        keukenbladDikte.length != 0
+        keukenbladDikte.length !== 0
           ? /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g.test(
               keukenbladDikte
             )
@@ -80,6 +108,7 @@ export default function Customizer() {
         if (attributes[atr].name === "Keukenblad dikte")
           attributes[atr].options = diktes;
       }
+
       // attributes and variation generation
       const prijzen = variationData.prijzen.split(" ");
       const gewichten = variationData.gewichten.split(" ");
@@ -115,7 +144,7 @@ export default function Customizer() {
           regular_price: prijzen[index],
           weight: gewichten[index],
         };
-        console.log(variation.attributes[0]);
+        console.log(variation.attributes[0].option);
         variants.push(variation);
       });
       const variantAttributes = variants[0]["attributes"];
@@ -158,33 +187,8 @@ export default function Customizer() {
           .replace(/[\u0300-\u036f]/g, "");
       return inputData;
     },
-    [inputValues, selectedOption]
+    [changeCurrentDescription]
   );
-
-  const changeCurrentDescription = useCallback(() => {
-    let description = "";
-    const words = inputValues.naam.split(/\s+/);
-    const uniqueWords = [];
-    const uniqueLowercaseWords = [];
-
-    words.forEach((word) => {
-      const lowercaseWord = word.toLowerCase();
-      if (!uniqueLowercaseWords.includes(lowercaseWord)) {
-        uniqueWords.push(word);
-        uniqueLowercaseWords.push(lowercaseWord);
-      }
-    });
-    const name = uniqueWords.join(" ");
-    const keys = Object.keys(text);
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i];
-      if (selectedOption === key) {
-        description = text[key].replace(/to-replace/g, name);
-        break;
-      }
-    }
-    return description;
-  }, [inputValues.naam, selectedOption]);
 
   useEffect(() => {
     changeCurrentDescription();
@@ -247,7 +251,7 @@ export default function Customizer() {
     if (selectedOption) {
       handleFind(inputValues);
     }
-  }, [inputValues, selectedOption]);
+  }, [inputValues, selectedOption, handleFind]);
 
   const filteredFormData = Object.keys(inputValues)
     .filter((key) => key !== "publish")

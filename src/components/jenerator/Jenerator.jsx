@@ -1,6 +1,6 @@
 import Title from "components/layout/Title";
 import { useOptionContext } from "context/Optioncontext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSendProduct } from "hooks/usePost";
 export default function Jenerator() {
   const { opt, dataSelect, myData, vars, failures, state } = useOptionContext();
@@ -102,7 +102,7 @@ export default function Jenerator() {
       </div>
     );
   };
-  const rmOverlay = () => {
+  const rmOverlay = useCallback(() => {
     setTimeout(() => {
       setProductCompletion(true);
     }, 3400);
@@ -110,10 +110,10 @@ export default function Jenerator() {
       setProductCompletion(false);
       reset();
     }, 4000);
-  };
+  }, [reset]);
   useEffect(() => {
     (status === "success" || status === "error") && rmOverlay();
-  }, [status]);
+  }, [status, rmOverlay]);
   return (
     <>
       {selectedData ? (

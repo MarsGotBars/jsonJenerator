@@ -1,3 +1,4 @@
+/* eslint no-useless-escape: 0 */
 const data = {
   Laminam: {
     name: "Laminam Replace-me keramiek keukenblad",
