@@ -6,6 +6,7 @@ const postProductData = async (product) => {
   let x = 0;
   let y = 0;
   let productUrl;
+  // console.log(product.status);
   try {
     const checkProductUrl = `${process.env.REACT_APP_API_URL}?slug=${product.slug}&consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`;
     const checkProduct = await axios.get(checkProductUrl);
@@ -15,11 +16,12 @@ const postProductData = async (product) => {
       checkProduct.data.length !== 0 && checkProduct.data[0].id;
     if (checkProduct.data.length === 0) {
       console.log("creating new product...");
+      product.status = "draft"
     } else {
       console.log("updating existing product...");
       if (checkProductVariations && checkProductVariations.length > 0) { // Check if variations exist
         const deleteVariations = checkProductVariations.map(
-          async (variation, i) => {
+          async (variation) => {
             await axios.delete(
               `${process.env.REACT_APP_API_URL}${checkProductId}/variations/${variation}?consumer_key=${process.env.REACT_APP_CK}&consumer_secret=${process.env.REACT_APP_CS}`
             );
@@ -31,7 +33,7 @@ const postProductData = async (product) => {
         console.log("No variations to delete.");
       }
     }
-
+    console.log(product.status);
     // Properly working
     productUrl = `${process.env.REACT_APP_API_URL}${
       checkProductId ? checkProductId : ""

@@ -91,11 +91,11 @@ export default function Customizer() {
       // ! SKU data
       const diktes =
         keukenbladDikte.length !== 0
-          ? /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g.test(
+          ? /(\d+(?:,\d+)?(?:-\d+(?:,\d+)?)? cm(?: opgedikt)?(?: \(\d+(\s*)(?:\+\d+)?mm\))?)/g.test(
               keukenbladDikte
             )
             ? keukenbladDikte.match(
-                /\d+,\d+(?:-\d+,\d+)? cm(?: opgedikt \([^)]+\))?|\d+ cm(?: opgedikt \([^)]+\))?/g
+              /(\d+(?:,\d+)?(?:-\d+(?:,\d+)?)? cm(?: opgedikt)?(?: \(\d+(\s*)(?:\+\d+)?mm\))?)/g
               )
             : ""
           : "";
@@ -141,6 +141,7 @@ export default function Customizer() {
           ],
           sku: splitSKU[index],
           regular_price: prijzen[index],
+          sale_price: prijzen[index],
           weight: gewichten[index],
         };
         console.log(variation.attributes[0].option);
